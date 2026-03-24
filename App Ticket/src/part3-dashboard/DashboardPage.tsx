@@ -51,6 +51,7 @@ export default function DashboardPage() {
     points: 450,
   };
 
+  
   return (
     <div className="p-6">
       <div className="mb-6">
