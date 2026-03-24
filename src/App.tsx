@@ -9,9 +9,12 @@ import MovieDetails from './part4-booking/MovieDetails';
 import SeatSelection from './part4-booking/SeatSelection';
 import Checkout from './part4-booking/Checkout';
 
+import { AuthProvider } from './context/AuthContext';
+
 function App() {
   return (
-    <Router>
+    <AuthProvider>
+      <Router>
       <div className="min-h-screen flex flex-col bg-dark-900 text-white">
         <Header />
         <main className="flex-grow">
@@ -28,6 +31,7 @@ function App() {
         </main>
       </div>
     </Router>
+    </AuthProvider>
   );
 }
 

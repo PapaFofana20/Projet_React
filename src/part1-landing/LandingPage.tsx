@@ -8,8 +8,7 @@ export default function LandingPage() {
   const trendingMovies = movies.slice(1);
 
   return (
-    <div className="flex flex-col min-h-screen bg-dark-900 pb-20">
-      {/* Featured Hero Section */}
+    <div className="flex flex-col min-h-screen bg-black pb-20">
       <section className="relative h-[80vh] w-full flex items-end pb-10 md:pb-16">
         <div className="absolute inset-0">
           <img 
@@ -17,8 +16,7 @@ export default function LandingPage() {
             alt={featuredMovie.title} 
             className="w-full h-full object-cover"
           />
-          {/* Enhanced Netflix Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-dark-900"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
 
@@ -34,7 +32,7 @@ export default function LandingPage() {
             </h1>
             
             <div className="flex items-center justify-center gap-6 mb-6 text-sm md:text-base font-bold tracking-wide">
-              <span className="text-green-500">98% Match</span>
+              <span className="text-green-500">98% de Correspondance</span>
               <span className="border border-white/40 px-2.5 py-0.5 rounded-sm text-white/90">12+</span>
               <span className="text-white/80">{featuredMovie.duration}</span>
               <span className="flex items-center gap-1.5 text-yellow-500">
@@ -66,7 +64,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Trending Now Horizontal Carousel */}
       <section className="relative z-20 mt-4 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto w-full">
         <h2 className="text-xl md:text-2xl font-bold mb-4 text-white/90 px-1">Tendances actuelles</h2>
         
@@ -84,13 +81,16 @@ export default function LandingPage() {
                 alt={movie.title} 
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                <h3 className="text-white font-bold truncate mb-2">{movie.title}</h3>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                <div className="mb-2">
+                  <span className="badge-red mb-1 inline-block">Récemment ajouté</span>
+                  <h3 className="text-white font-bold truncate">{movie.title}</h3>
+                </div>
                 <Link 
                   to={`/movie/${movie.id}`}
                   className="w-full bg-brand-500 text-white text-center py-2 rounded font-semibold text-sm hover:bg-brand-600 transition-colors"
                 >
-                  View Details
+                  Voir Détails
                 </Link>
               </div>
             </motion.div>
@@ -98,7 +98,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Another Category Section */}
       <section className="mt-8 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto w-full">
         <h2 className="text-xl md:text-2xl font-bold mb-4 text-white/90 px-1">Top 10 des films aujourd'hui</h2>
         <div className="flex gap-4 overflow-x-auto pb-8 pt-4 scrollbar-hide snap-x">
@@ -112,11 +111,7 @@ export default function LandingPage() {
               className="relative flex items-end min-w-[160px] md:min-w-[240px] snap-start shrink-0 cursor-pointer group pt-4"
             >
               <div 
-                className="absolute left-0 bottom-[-15px] md:bottom-[-25px] text-[130px] md:text-[200px] font-black leading-none z-0 tracking-tighter"
-                style={{ 
-                  WebkitTextStroke: '4px #555', 
-                  color: '#1a1a1a',
-                }}
+                className="absolute left-[-15px] bottom-[-15px] md:bottom-[-25px] text-[150px] md:text-[220px] font-black leading-none z-0 tracking-tighter text-outline"
               >
                 {idx + 1}
               </div>
@@ -131,7 +126,7 @@ export default function LandingPage() {
                     to={`/movie/${movie.id}`}
                     className="w-full bg-white text-black text-center py-1.5 md:py-2 rounded font-semibold text-xs md:text-sm hover:bg-gray-200 transition-colors"
                   >
-                    Tickets
+                    Billets
                   </Link>
                 </div>
               </div>

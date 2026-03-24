@@ -1,11 +1,20 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { CreditCard, CheckCircle, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 export default function Checkout() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [isSuccess, setIsSuccess] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { message: 'Veuillez vous connecter pour finaliser votre commande' } });
+    }
+  }, [isAuthenticated, navigate]);
 
   const handlePayment = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,20 +32,20 @@ export default function Checkout() {
           <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-10 h-10" />
           </div>
-          <h2 className="text-3xl font-bold mb-2">Payment Successful!</h2>
-          <p className="text-gray-400 mb-8">Your tickets have been confirmed and sent to your email.</p>
+          <h2 className="text-3xl font-bold mb-2">Paiement Réussi !</h2>
+          <p className="text-gray-400 mb-8">Vos billets ont été confirmés et envoyés à votre adresse email.</p>
           <div className="space-y-4">
             <Link 
               to="/dashboard"
               className="block w-full bg-brand-500 hover:bg-brand-600 text-white font-medium py-3 rounded-xl transition-colors"
             >
-              View My Tickets
+              Voir Mes Billets
             </Link>
             <Link 
               to="/"
               className="block w-full bg-dark-700 hover:bg-dark-600 text-white font-medium py-3 rounded-xl transition-colors"
             >
-              Back to Home
+              Retour à l'Accueil
             </Link>
           </div>
         </motion.div>
@@ -49,31 +58,31 @@ export default function Checkout() {
       <div className="mb-8">
         <Link to={`/book/${id}/seats`} className="text-gray-400 hover:text-white flex items-center gap-2 mb-2 transition-colors">
           <ArrowLeft className="w-4 h-4" />
-          Back to Seats
+          Retour aux Sièges
         </Link>
-        <h1 className="text-3xl font-bold">Checkout</h1>
+        <h1 className="text-3xl font-bold">Paiement</h1>
       </div>
 
       <div className="bg-dark-800 rounded-2xl p-6 md:p-8 border border-dark-700">
         <div className="flex items-center gap-3 mb-8 pb-6 border-b border-dark-700">
           <CreditCard className="w-6 h-6 text-brand-500" />
-          <h2 className="text-xl font-bold">Payment Details (Mock)</h2>
+          <h2 className="text-xl font-bold">Détails du Paiement</h2>
         </div>
 
         <form onSubmit={handlePayment} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5" htmlFor="cardName">Name on Card</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5" htmlFor="cardName">Nom sur la Carte</label>
             <input 
               type="text" 
               id="cardName" 
               required
               className="w-full bg-dark-900 border border-dark-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
-              placeholder="John Doe"
+              placeholder="Nom"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5" htmlFor="cardNumber">Card Number</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5" htmlFor="cardNumber">Numéro de Carte</label>
             <input 
               type="text" 
               id="cardNumber" 
@@ -85,7 +94,7 @@ export default function Checkout() {
 
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5" htmlFor="expiry">Expiry Date</label>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5" htmlFor="expiry">Date d'Expiration</label>
               <input 
                 type="text" 
                 id="expiry" 
@@ -110,11 +119,11 @@ export default function Checkout() {
             type="submit" 
             className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-4 rounded-xl mt-4 transition-all shadow-lg shadow-brand-500/30 text-lg flex items-center justify-center gap-2"
           >
-            Pay Now
+            Payer Maintenant
           </button>
           
           <p className="text-gray-500 text-sm text-center mt-4">
-            This is a mock payment form for the student project. No real transactions will occur.
+            Ceci est un projet d'étude. Aucune transaction réelle ne sera effectuée.
           </p>
         </form>
       </div>

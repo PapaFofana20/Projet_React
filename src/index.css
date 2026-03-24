@@ -3,15 +3,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #fef2f2;
-  --color-brand-100: #fee2e2;
-  --color-brand-500: #e50914; /* Netflix Red */
-  --color-brand-600: #b91c1c;
-  --color-brand-900: #7f1d1d;
+  --color-brand-500: #E50914; /* Netflix Red */
+  --color-brand-600: #B20710;
+  --color-brand-700: #831010;
 
-  --color-dark-900: #141414; /* Deep Black */
-  --color-dark-800: #232323; /* Dark Gray */
-  --color-dark-700: #333333; /* Medium Gray */
+  --color-dark-900: #000000; /* Pure Black */
+  --color-dark-800: #141414; /* Netflix Dark Gray */
+  --color-dark-700: #181818;
+  --color-dark-600: #2f2f2f;
+
+  --color-accent-500: #E50914;
 }
 
 @layer base {
@@ -19,6 +20,18 @@
     @apply bg-dark-900 text-white antialiased selection:bg-brand-500 selection:text-white;
     font-family: 'Inter', system-ui, sans-serif;
   }
+}
+
+/* Netflix Style Utilities */
+.text-outline {
+  -webkit-text-stroke: 2px #555;
+  color: #000;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.badge-red {
+  @apply bg-brand-500 text-white text-[10px] font-black px-2 py-0.5 rounded-sm uppercase tracking-wider;
 }
 
 /* Custom Scrollbar */
