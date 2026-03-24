@@ -4,12 +4,12 @@ import { motion } from 'framer-motion';
 import { movies } from '../data/movies';
 
 export default function LandingPage() {
-  const featuredMovie = movies[0]; // Dune Part Two
+  const featuredMovie = movies[0]; 
   const trendingMovies = movies.slice(1);
 
   return (
     <div className="flex flex-col min-h-screen bg-dark-900 pb-20">
-      {/* Featured Hero Section */}
+
       <section className="relative h-[80vh] w-full flex items-end pb-10 md:pb-16">
         <div className="absolute inset-0">
           <img 
@@ -17,7 +17,6 @@ export default function LandingPage() {
             alt={featuredMovie.title} 
             className="w-full h-full object-cover"
           />
-          {/* Enhanced Netflix Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-dark-900"></div>
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
@@ -34,7 +33,7 @@ export default function LandingPage() {
             </h1>
             
             <div className="flex items-center justify-center gap-6 mb-6 text-sm md:text-base font-bold tracking-wide">
-              <span className="text-green-500">98% Match</span>
+              <span className="text-green-500">98% Visionnés</span>
               <span className="border border-white/40 px-2.5 py-0.5 rounded-sm text-white/90">12+</span>
               <span className="text-white/80">{featuredMovie.duration}</span>
               <span className="flex items-center gap-1.5 text-yellow-500">
@@ -90,7 +89,7 @@ export default function LandingPage() {
                   to={`/movie/${movie.id}`}
                   className="w-full bg-brand-500 text-white text-center py-2 rounded font-semibold text-sm hover:bg-brand-600 transition-colors"
                 >
-                  View Details
+                  Voir Détails
                 </Link>
               </div>
             </motion.div>
