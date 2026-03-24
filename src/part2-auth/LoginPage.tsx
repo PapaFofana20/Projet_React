@@ -14,8 +14,8 @@ export default function LoginPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8">
         <div className="w-full max-w-md bg-dark-800 rounded-2xl p-8 border border-dark-700 shadow-xl">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-          <p className="text-gray-400">Sign in to your account to manage bookings</p>
+          <h1 className="text-3xl font-bold mb-2">Heureux de vous revoir</h1>
+          <p className="text-gray-400">Connectez-vous à votre compte pour gérer vos réservations</p>
         </div>
 
         <form className="space-y-5" onSubmit={handleAuth}>
@@ -36,8 +36,8 @@ export default function LoginPage() {
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-sm font-medium text-gray-300" htmlFor="password">Password</label>
-              <Link to="/reset-password" className="text-sm text-brand-500 hover:text-brand-400">Forgot password?</Link>
+              <label className="block text-sm font-medium text-gray-300" htmlFor="password">Mot de passe</label>
+              <Link to="/reset-password" className="text-sm text-brand-500 hover:text-brand-400">Mot de passe oublié ?</Link>
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -78,8 +78,8 @@ export default function LoginPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/40 to-transparent"></div>
         <div className="absolute bottom-12 left-12 right-12 text-white">
-          <h2 className="text-4xl font-bold mb-4">Your Cinematic Journey</h2>
-          <p className="text-xl text-gray-300">Experience movies like never before with premium seating and sound.</p>
+          <h2 className="text-4xl font-bold mb-4">Votre expérience cinématographique</h2>
+          <p className="text-xl text-gray-300">Découvrez les films comme jamais auparavant avec des sièges premium et un son de qualité supérieure</p>
         </div>
       </div>
     </div>

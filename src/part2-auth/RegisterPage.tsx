@@ -14,13 +14,13 @@ export default function RegisterPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8">
         <div className="w-full max-w-md bg-dark-800 rounded-2xl p-8 border border-dark-700 shadow-xl">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Create Account</h1>
-          <p className="text-gray-400">Join us to book tickets and manage your reservations</p>
+          <h1 className="text-3xl font-bold mb-2">Créer un compte</h1>
+          <p className="text-gray-400">Rejoignez-nous pour réserver des billets et gérer vos réservations</p>
         </div>
 
         <form className="space-y-5" onSubmit={handleAuth}>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5" htmlFor="name">Full Name</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5" htmlFor="name">Nom complet</label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <User className="h-5 w-5 text-gray-500" />
@@ -90,8 +90,8 @@ export default function RegisterPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/40 to-transparent"></div>
         <div className="absolute bottom-12 left-12 right-12 text-white">
-          <h2 className="text-4xl font-bold mb-4">Join the Club</h2>
-          <p className="text-xl text-gray-300">Unlock exclusive perks, early ticket access, and special cinematic events.</p>
+          <h2 className="text-4xl font-bold mb-4">Rejoignez le club</h2>
+          <p className="text-xl text-gray-300">Débloquez des avantages exclusifs, un accès anticipé aux billets et des événements cinématographiques spéciaux</p>
         </div>
       </div>
     </div>

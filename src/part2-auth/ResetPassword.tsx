@@ -14,8 +14,8 @@ export default function ResetPassword() {
         </div>
         
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Reset Password</h1>
-          <p className="text-gray-400">Enter your email and we'll send you a link to reset your password</p>
+          <h1 className="text-3xl font-bold mb-2">Réinitialiser le mot de passe</h1>
+          <p className="text-gray-400">Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe</p>
         </div>
 
         <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
@@ -53,8 +53,8 @@ export default function ResetPassword() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/40 to-transparent"></div>
         <div className="absolute bottom-12 left-12 right-12 text-white">
-          <h2 className="text-4xl font-bold mb-4">Secure Your Account</h2>
-          <p className="text-xl text-gray-300">Regain access to your bookings and upcoming movie experiences.</p>
+          <h2 className="text-4xl font-bold mb-4">Sécurisez votre compte</h2>
+          <p className="text-xl text-gray-300">Récupérez l’accès à vos réservations et à vos prochaines expériences cinématographiques</p>
         </div>
       </div>
     </div>
