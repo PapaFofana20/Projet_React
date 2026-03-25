@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { movies } from '../data/movies';
 
 export default function LandingPage() {
-  const featuredMovie = movies[0]; // Dune Part Two
+  const featuredMovie = movies[0]; 
   const trendingMovies = movies.slice(1);
 
   return (
@@ -90,6 +90,7 @@ export default function LandingPage() {
                   to={`/movie/${movie.id}`}
                   className="w-full bg-brand-500 text-white text-center py-2 rounded font-semibold text-sm hover:bg-brand-600 transition-colors"
                 >
+                  Voir Détails
                   Voir Détails
                 </Link>
               </div>
