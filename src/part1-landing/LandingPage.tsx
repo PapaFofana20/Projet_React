@@ -27,7 +27,7 @@ export default function LandingPage() {
             transition={{ duration: 0.8 }}
             className="max-w-3xl"
           >
-            <h1 className="text-5xl md:text-7xl font-black mb-4 text-white tracking-tighter uppercase leading-none">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 text-white tracking-tighter uppercase leading-none">
               {featuredMovie.title}
             </h1>
             
@@ -40,21 +40,21 @@ export default function LandingPage() {
               </span>
             </div>
 
-            <p className="text-base md:text-lg text-white/90 mb-8 line-clamp-3 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-white/90 mb-8 line-clamp-3 leading-relaxed max-w-2xl mx-auto">
               {featuredMovie.description}
             </p>
 
-            <div className="flex items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link 
                 to={`/book/${featuredMovie.id}/seats`}
-                className="flex items-center gap-2 bg-white text-black px-8 py-3.5 rounded font-black text-lg hover:bg-white/90 transition-all hover:scale-105 active:scale-95 shadow-xl"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-black px-8 py-3 rounded font-black text-base sm:text-lg hover:bg-white/90 transition-all hover:scale-105 active:scale-95 shadow-xl"
               >
                 <Play className="w-5 h-5 fill-current" />
                 Voir salle
               </Link>
               <Link 
                 to={`/movie/${featuredMovie.id}`}
-                className="flex items-center gap-2 bg-white/20 text-white px-8 py-3.5 rounded font-black text-lg hover:bg-white/30 transition-all hover:scale-105 active:scale-95 backdrop-blur-md border border-white/10"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white/20 text-white px-8 py-3 rounded font-black text-base sm:text-lg hover:bg-white/30 transition-all hover:scale-105 active:scale-95 backdrop-blur-md border border-white/10"
               >
                 <Info className="w-5 h-5" />
                 Plus d'infos
@@ -111,7 +111,7 @@ export default function LandingPage() {
               className="relative flex items-end min-w-[160px] md:min-w-[240px] snap-start shrink-0 cursor-pointer group pt-4"
             >
               <div 
-                className="absolute left-[-15px] bottom-[-15px] md:bottom-[-25px] text-[150px] md:text-[220px] font-black leading-none z-0 tracking-tighter text-outline"
+                className="absolute left-[-10px] sm:left-[-15px] bottom-[-10px] sm:bottom-[-15px] md:bottom-[-25px] text-[100px] sm:text-[150px] md:text-[220px] font-black leading-none z-0 tracking-tighter text-outline"
               >
                 {idx + 1}
               </div>

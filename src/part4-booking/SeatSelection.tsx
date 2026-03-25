@@ -43,7 +43,7 @@ export default function SeatSelection() {
           </div>
         </div>
 
-        <div className="bg-dark-800 rounded-2xl p-8 border border-dark-700 overflow-x-auto">
+        <div className="bg-dark-800 rounded-2xl p-4 sm:p-8 border border-dark-700 overflow-x-auto">
           <div className="relative h-12 mb-16 mx-auto max-w-2xl">
             <div className="absolute inset-x-0 bottom-0 h-10 border-t-4 border-brand-500/50 rounded-t-[100%] shadow-[0_-10px_30px_rgba(229,9,20,0.3)]"></div>
             <p className="text-center w-full uppercase tracking-[0.3em] text-gray-400 text-sm absolute top-4 font-semibold">Écran</p>
@@ -82,18 +82,14 @@ export default function SeatSelection() {
             ))}
           </div>
 
-          <div className="flex justify-center gap-8 mt-12 pt-8 border-t border-dark-700">
+          <div className="flex justify-center gap-4 sm:gap-8 mt-12 pt-8 border-t border-dark-700">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded bg-dark-700 flex items-center justify-center"><Armchair className="w-4 h-4 text-white/30" /></div>
-              <span className="text-sm text-gray-400">Disponible</span>
+              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded bg-dark-700 flex items-center justify-center"><Armchair className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/30" /></div>
+              <span className="text-xs sm:text-sm text-gray-400">Disponible</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded bg-brand-500 flex items-center justify-center"><Armchair className="w-4 h-4 text-white" /></div>
-              <span className="text-sm text-gray-400">Sélectionné</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded bg-dark-900 border border-dark-700 flex items-center justify-center"><Armchair className="w-4 h-4 text-white/10" /></div>
-              <span className="text-sm text-gray-400">Vendu</span>
+              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded bg-brand-500 flex items-center justify-center"><Armchair className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" /></div>
+              <span className="text-xs sm:text-sm text-gray-400">Sélectionné</span>
             </div>
           </div>
         </div>

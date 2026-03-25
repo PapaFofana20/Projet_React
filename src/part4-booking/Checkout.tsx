@@ -63,7 +63,7 @@ export default function Checkout() {
         <h1 className="text-3xl font-bold">Paiement</h1>
       </div>
 
-      <div className="bg-dark-800 rounded-2xl p-6 md:p-8 border border-dark-700">
+      <div className="bg-dark-800 rounded-2xl p-6 sm:p-8 border border-dark-700 shadow-xl">
         <div className="flex items-center gap-3 mb-8 pb-6 border-b border-dark-700">
           <CreditCard className="w-6 h-6 text-brand-500" />
           <h2 className="text-xl font-bold">Détails du Paiement</h2>
@@ -117,7 +117,7 @@ export default function Checkout() {
 
           <button 
             type="submit" 
-            className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-4 rounded-xl mt-4 transition-all shadow-lg shadow-brand-500/30 text-lg flex items-center justify-center gap-2"
+            className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3.5 sm:py-4 rounded-xl mt-4 transition-all shadow-lg shadow-brand-500/30 text-base sm:text-lg flex items-center justify-center gap-2"
           >
             Payer Maintenant
           </button>

@@ -38,10 +38,10 @@ export default function RegisterPage() {
   return (
     <div className="flex-grow flex">
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8">
-        <div className="w-full max-w-md bg-dark-800 rounded-2xl p-8 border border-dark-700 shadow-xl">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Créer un Compte</h1>
-          <p className="text-gray-400">Rejoignez-nous pour réserver des billets et gérer vos réservations</p>
+        <div className="w-full max-w-md bg-dark-800 rounded-2xl p-6 sm:p-8 border border-dark-700 shadow-xl">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Créer un Compte</h1>
+          <p className="text-sm sm:text-base text-gray-400">Rejoignez-nous pour réserver des billets et gérer vos réservations</p>
         </div>
 
         <form className="space-y-5" onSubmit={handleAuth}>

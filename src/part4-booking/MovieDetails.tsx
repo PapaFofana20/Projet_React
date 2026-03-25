@@ -41,7 +41,7 @@ export default function MovieDetails() {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full md:w-1/3 lg:w-1/4 shrink-0"
+            className="w-full md:w-1/3 lg:w-1/4 shrink-0 px-4 md:px-0"
           >
             <div className="rounded-xl overflow-hidden shadow-2xl border border-dark-700">
               <img src={movie.poster} alt={movie.title} className="w-full h-auto" />
@@ -49,7 +49,7 @@ export default function MovieDetails() {
             
             <button 
               onClick={handleBooking}
-              className="mt-6 w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-brand-500/30"
+              className="mt-6 w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-brand-500/30 text-base sm:text-lg"
             >
               <Ticket className="w-5 h-5 relative -top-0.5" />
               Réserver des Billets
