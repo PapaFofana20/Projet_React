@@ -180,20 +180,16 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
           {exclusiveMovies.map((movie, idx) => (
-            <motion.div
+            <div
               key={movie.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
               className="group relative bg-dark-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl overflow-hidden border border-white/5 transition-all duration-500"
             >
-              <div className="flex flex-col sm:flex-row sm:items-stretch h-full">
+              <div className="flex flex-col h-full">
                                 <Link 
                   to={`/movie/${movie.id}`}
-                  className="relative w-full sm:w-32 md:w-40 aspect-[2/3] sm:h-48 md:h-60 shrink-0 overflow-hidden block"
+                  className="relative w-full aspect-[2/3] overflow-hidden block"
                 >
                   <img 
                     src={movie.poster} 
@@ -203,40 +199,38 @@ export default function LandingPage() {
                       (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${movie.id}/400/600`;
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent sm:from-dark-900 to-transparent sm:block hidden" />
                 </Link>
                 
-                                <div className="flex-1 p-3 sm:p-4 flex flex-col">
+                                <div className="flex-1 p-2 sm:p-4 flex flex-col">
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1 sm:mb-2">
+                    <div className="flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
                       {movie.isExclusive && (
-                        <span className="bg-gradient-to-r from-yellow-500 to-amber-500 text-black text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded">
+                        <span className="bg-gradient-to-r from-yellow-500 to-amber-500 text-black text-[7px] sm:text-[10px] font-bold px-1 sm:px-2 py-0.5 rounded">
                           EXCLUSIF
                         </span>
                       )}
-                      <span className="flex items-center gap-1 text-yellow-400 text-xs font-bold">
-                        <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
+                      <span className="flex items-center gap-1 text-yellow-400 text-[9px] sm:text-xs font-bold">
+                        <Star className="w-2 h-2 sm:w-3 sm:h-3 fill-current" />
                         {movie.rating}
                       </span>
                     </div>
-                    <h3 className="text-white font-bold text-base sm:text-lg transition-colors line-clamp-1">
+                    <h3 className="text-white font-bold text-xs sm:text-lg transition-colors line-clamp-1">
                       {movie.title}
                     </h3>
-                    <p className="text-gray-400 text-xs sm:text-sm mt-1">{movie.genre}</p>
-                    <p className="text-gray-500 text-[10px] sm:text-xs mt-2 line-clamp-2 sm:line-clamp-3">{movie.description}</p>
+                    <p className="text-gray-400 text-[9px] sm:text-sm mt-0.5 sm:mt-1">{movie.genre}</p>
                   </div>
                   
                   <Link
                     to={`/movie/${movie.id}`}
-                    className="mt-3 sm:mt-4 bg-white/10 hover:bg-brand-500 text-white text-center py-1.5 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg hover:shadow-brand-500/25"
+                    className="mt-2 sm:mt-4 bg-white/10 hover:bg-brand-500 text-white text-center py-1.5 sm:py-2 rounded-lg font-semibold text-[10px] sm:text-sm transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg hover:shadow-brand-500/25"
                   >
-                    Voir détails
+                    Détails
                   </Link>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            </div>
+            ))}
+          </div>
       </section>
 
             <section className="mt-16 sm:mt-20 md:mt-28 px-4 sm:px-6 md:px-8 lg:px-12 max-w-[1600px] mx-auto w-full">
