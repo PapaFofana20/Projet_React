@@ -13,16 +13,19 @@ export default function LandingPage() {
             <section className="relative h-[80vh] sm:h-screen w-full flex items-end pb-12 sm:pb-20 md:pb-24 overflow-hidden">
                 <div className="absolute inset-0">
           <motion.div 
-            initial={{ scale: 1.1 }}
+            initial={{ scale: 1.05 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.5 }}
             className="absolute inset-0"
           >
-            <img 
-              src={featuredMovie.image} 
-              alt={featuredMovie.title} 
-              className="w-full h-full object-cover object-top"
-            />
+            <picture>
+              <source media="(min-width: 768px)" srcSet={featuredMovie.image} />
+              <img 
+                src={featuredMovie.poster} 
+                alt={featuredMovie.title} 
+                className="w-full h-full object-cover object-top lg:object-[center_20%]"
+              />
+            </picture>
           </motion.div>
           
                     <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/60 to-transparent"></div>
@@ -87,7 +90,7 @@ export default function LandingPage() {
                         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <Link 
                 to={`/book/${featuredMovie.id}/seats`}
-                className="group flex items-center gap-2 sm:gap-3 bg-white text-black px-5 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl"
+                className="group flex items-center gap-2 sm:gap-3 bg-red-600 text-white px-5 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-lg hover:bg-red-700 transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl"
               >
                 <Ticket className="w-5 h-5 sm:w-6 sm:h-6 fill-current group-hover:rotate-12 transition-transform" />
                 Réserver
@@ -153,7 +156,7 @@ export default function LandingPage() {
                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <Link
                     to={`/book/${movie.id}/seats`}
-                    className="bg-brand-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold text-xs sm:text-sm shadow-lg shadow-brand-500/50 hover:bg-brand-600 transition-colors flex items-center gap-1 sm:gap-2"
+                    className="bg-red-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold text-xs sm:text-sm shadow-lg shadow-red-600/50 hover:bg-red-700 transition-colors flex items-center gap-1 sm:gap-2"
                   >
                     <Ticket className="w-3 h-3 sm:w-4 sm:h-4" />
                     Réserver
@@ -175,108 +178,141 @@ export default function LandingPage() {
             <section className="mt-16 sm:mt-20 md:mt-28 px-4 sm:px-6 md:px-8 lg:px-12 max-w-[1600px] mx-auto w-full">
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div className="flex items-center gap-2 sm:gap-3">
-            <Flame className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500" />
+            <Flame className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">Films Exclusifs</h2>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5">
           {exclusiveMovies.map((movie, idx) => (
-            <div
-              key={movie.id}
-              className="group relative bg-dark-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl overflow-hidden border border-white/5 transition-all duration-500"
-            >
-              <div className="flex flex-col h-full">
-                                <Link 
-                  to={`/movie/${movie.id}`}
-                  className="relative w-full aspect-[2/3] overflow-hidden block"
-                >
-                  <img 
-                    src={movie.poster} 
-                    alt={movie.title} 
-                    className="w-full h-full object-cover transition-transform duration-500"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${movie.id}/400/600`;
-                    }}
-                  />
-                </Link>
-                
-                                <div className="flex-1 p-2 sm:p-4 flex flex-col">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
-                      {movie.isExclusive && (
-                        <span className="bg-gradient-to-r from-yellow-500 to-amber-500 text-black text-[7px] sm:text-[10px] font-bold px-1 sm:px-2 py-0.5 rounded">
-                          EXCLUSIF
-                        </span>
-                      )}
-                      <span className="flex items-center gap-1 text-yellow-400 text-[9px] sm:text-xs font-bold">
-                        <Star className="w-2 h-2 sm:w-3 sm:h-3 fill-current" />
-                        {movie.rating}
-                      </span>
-                    </div>
-                    <h3 className="text-white font-bold text-xs sm:text-lg transition-colors line-clamp-1">
-                      {movie.title}
-                    </h3>
-                    <p className="text-gray-400 text-[9px] sm:text-sm mt-0.5 sm:mt-1">{movie.genre}</p>
-                  </div>
-                  
-                  <Link
-                    to={`/movie/${movie.id}`}
-                    className="mt-2 sm:mt-4 bg-white/10 hover:bg-brand-500 text-white text-center py-1.5 sm:py-2 rounded-lg font-semibold text-[10px] sm:text-sm transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg hover:shadow-brand-500/25"
-                  >
-                    Détails
-                  </Link>
-                </div>
-              </div>
-            </div>
-            ))}
-          </div>
-      </section>
-
-            <section className="mt-16 sm:mt-20 md:mt-28 px-4 sm:px-6 md:px-8 lg:px-12 max-w-[1600px] mx-auto w-full">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
-          <span className="text-2xl sm:text-4xl">🔥</span> Top 10 Films
-        </h2>
-        
-        <div className="flex gap-3 sm:gap-5 overflow-x-auto pb-6 sm:pb-8 pt-2 sm:pt-4 scrollbar-hide snap-x">
-          {movies.slice(0, 10).map((movie, idx) => (
             <motion.div 
-              key={`top-${movie.id}`}
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              key={movie.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.05 }}
-              className="relative flex items-end min-w-[130px] sm:min-w-[140px] md:min-w-[180px] snap-start shrink-0 cursor-pointer group"
+              transition={{ delay: idx * 0.1 }}
+              className="group"
             >
-              <div 
-                className="absolute left-0 bottom-[-5px] sm:bottom-[-10px] md:bottom-[-20px] text-[80px] sm:text-[100px] md:text-[150px] font-black leading-none z-0 tracking-tighter select-none"
-                style={{ 
-                  WebkitTextStroke: '3px #444', 
-                  color: 'transparent',
-                }}
-              >
-                {idx + 1}
-              </div>
-              
-              <Link
-                to={`/movie/${movie.id}`}
-                className="relative w-[90px] sm:w-[100px] md:w-[130px] ml-auto aspect-[2/3] rounded-lg overflow-hidden z-10 shadow-[15px_0_25px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:scale-105 group-hover:shadow-brand-500/30"
-              >
+              <div className="relative aspect-[2/3] rounded-lg sm:rounded-xl overflow-hidden shadow-2xl shadow-black/50 group-hover:shadow-brand-500/20 transition-all duration-500">
                 <img 
                   src={movie.poster} 
                   alt={movie.title} 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${movie.id}/400/600`;
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-2 sm:p-3">
-                  <h3 className="text-white font-bold text-[10px] sm:text-xs truncate mb-1 sm:mb-2">{movie.title}</h3>
-                  <span className="w-full bg-brand-500 text-white text-center py-1 sm:py-1.5 rounded font-semibold text-[10px] sm:text-xs">
-                    Voir détails
-                  </span>
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1 sm:gap-2">
+                  {movie.isNew && (
+                    <span className="bg-brand-500 text-white text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">NOUVEAU</span>
+                  )}
+                  {movie.isExclusive && (
+                    <span className="bg-gradient-to-r from-yellow-500 to-amber-500 text-black text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
+                      EXCLUSIF
+                    </span>
+                  )}
                 </div>
-              </Link>
+
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <Link
+                    to={`/book/${movie.id}/seats`}
+                    className="bg-red-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold text-xs sm:text-sm shadow-lg shadow-red-600/50 hover:bg-red-700 transition-colors flex items-center gap-1 sm:gap-2"
+                  >
+                    <Ticket className="w-3 h-3 sm:w-4 sm:h-4" />
+                    Réserver
+                  </Link>
+                </div>
+              </div>
+
+              <div className="mt-2 sm:mt-3">
+                <h3 className="text-white font-bold text-xs sm:text-sm md:text-base truncate group-hover:text-brand-500 transition-colors">
+                  {movie.title}
+                </h3>
+                <p className="text-gray-500 text-[10px] sm:text-xs mt-1">{movie.genre.split('/')[0]}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+            <section className="mt-16 sm:mt-20 md:mt-28 px-4 sm:px-6 md:px-8 lg:px-12 max-w-[1600px] mx-auto w-full">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+          <Flame className="w-6 h-6 sm:w-8 sm:h-8 text-red-600" /> Top 10 Films
+        </h2>
+        
+        <div className="flex gap-6 sm:gap-8 overflow-x-auto pb-8 pt-4 scrollbar-hide snap-x scroll-smooth">
+          {movies.slice(0, 10).map((movie, idx) => (
+            <motion.div 
+              key={`top-${movie.id}`}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.05 }}
+              className="relative flex items-center shrink-0 snap-start group w-auto"
+            >
+              {/* Giant Rank Number */}
+              <div 
+                className="text-[120px] sm:text-[150px] md:text-[180px] font-black leading-none tracking-tighter z-0 -mr-6 sm:-mr-10 md:-mr-12 select-none text-gray-400 drop-shadow-[0_0_15px_rgba(0,0,0,1)]"
+                style={{ 
+                  WebkitTextStroke: '2px #1f2937'
+                }}
+              >
+                {idx + 1}
+              </div>
+
+              <div className="relative flex flex-col z-10 w-[140px] sm:w-[180px] md:w-[220px]">
+                {/* Image Container with Badges */}
+                <Link
+                  to={`/movie/${movie.id}`}
+                  className="relative w-full aspect-[2/3] rounded-xl overflow-hidden block transition-transform duration-500 group-hover:scale-[1.02] shadow-2xl shadow-black/80"
+                >
+                  <img 
+                    src={movie.poster} 
+                    alt={movie.title} 
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${movie.id}/400/600`;
+                    }}
+                  />
+                  
+                  {/* Badges - styled after the image provided */}
+                  <div className="absolute top-2 left-2 flex flex-col gap-1.5 z-20">
+                    {movie.isNew && (
+                      <span className="bg-[#E50914] text-white text-[8px] lg:text-[10px] font-black px-2 py-0.5 rounded shadow-lg uppercase tracking-wider w-fit">
+                        NOUVEAU
+                      </span>
+                    )}
+                    {movie.isExclusive && (
+                      <span className="bg-[#EBC024] text-black text-[8px] lg:text-[10px] font-black px-2 py-0.5 rounded shadow-lg uppercase tracking-wider w-fit">
+                        EXCLUSIF
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300" />
+                </Link>
+                
+                {/* Movie Info - Left Aligned */}
+                <div className="mt-3 flex flex-col items-start px-0.5">
+                  <h3 className="text-white font-bold text-sm lg:text-base line-clamp-1 group-hover:text-brand-400 transition-colors">
+                    {movie.title}
+                  </h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    <p className="text-gray-400 text-[10px] lg:text-xs font-medium uppercase tracking-tight">
+                      {movie.genre.split(' / ')[0]}
+                    </p>
+                    <span className="w-1 h-1 bg-gray-600 rounded-full" />
+                    <div className="flex items-center gap-0.5 text-yellow-500">
+                      <Star className="w-2.5 h-2.5 lg:w-3 lg:h-3 fill-current" />
+                      <span className="text-[10px] lg:text-xs font-bold">{movie.rating}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>

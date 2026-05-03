@@ -62,7 +62,7 @@ export const movies = [
     director: "Jon M. Chu",
     description: "L'extraordinaire sorcière de l'Ouest et Glinda la Bonne occupent le devant de la scène dans ce triomphe cinématographique maintes fois primé et qui a marqué toute une génération.",
     isNew: true,
-    isExclusive: true
+    isExclusive: false
   },
   {
     id: 23,
@@ -75,7 +75,7 @@ export const movies = [
     director: "Matt Shakman",
     description: "Les Quatre Fantastiques doivent maîtriser leur pouvoir extraordinaire et affronter le plus grand méchant de l'univers, Galactus.",
     isNew: true,
-    isExclusive: true
+    isExclusive: false
   },
   {
     id: 16,
@@ -127,7 +127,7 @@ export const movies = [
     director: "Alexandre Astier",
     description: "Après avoir repris Kaamelott, Arthur doit prouver sa légitimité en tant que roi face à de nouvelles menaces venues des dieux celtes.",
     isNew: true,
-    isExclusive: true
+    isExclusive: false
   },
   {
     id: 22,
@@ -140,6 +140,6 @@ export const movies = [
     director: "Todd Phillips",
     description: "Arthur Fleck est emprisonné à Arkham en attendant son procès pour les crimes commis en tant que Joker, tandis qu'il découvre l'amour avec Harley Quinn.",
     isNew: true,
-    isExclusive: true
+    isExclusive: false
   }
 ];
