@@ -21,7 +21,7 @@ export default function SeatSelection() {
   };
 
   const CINEMAS = Object.keys(CINEMA_LAYOUTS);
-  const [selectedCinema, setSelectedCinema] = useState(CINEMAS[0]);
+  const [selectedCinema] = useState(CINEMAS[0]);
 
   const dates = [...Array(7)].map((_, i) => {
     const d = new Date();
@@ -32,8 +32,8 @@ export default function SeatSelection() {
   const times = ['16:00', '17:30', '18:15', '19:00', '20:00'];
   
   const movieIndex = movie ? movie.id : 0;
-  const [selectedDate, setSelectedDate] = useState(dates[movieIndex % dates.length]);
-  const [selectedTime, setSelectedTime] = useState(times[movieIndex % times.length]);
+  const [selectedDate] = useState(dates[movieIndex % dates.length]);
+  const [selectedTime] = useState(times[movieIndex % times.length]);
 
   const currentLayout = CINEMA_LAYOUTS[selectedCinema];
 

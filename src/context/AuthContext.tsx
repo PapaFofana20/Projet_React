@@ -43,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const userData = {
-      name: finalName,
+      name: finalName || '',
       email: email
     };
     localStorage.setItem('seneflix_user', JSON.stringify(userData));

@@ -1,132 +1,9 @@
-import { Calendar, Clock, MapPin, Ticket, Trash2, Download } from 'lucide-react';
+import { Calendar, Clock, MapPin, Ticket, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useBookings, type Booking } from '../context/BookingContext';
+import { useBookings } from '../context/BookingContext';
 import { useAuth } from '../context/AuthContext';
 import { QRCodeSVG } from 'qrcode.react';
-import { jsPDF } from 'jspdf';
-
-function generatePDF(booking: Booking) {
-  const doc = new jsPDF({
-    unit: 'mm',
-    format: 'a5',
-    orientation: 'portrait'
-  });
-  
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const pageHeight = doc.internal.pageSize.getHeight();
-  const margin = 15;
-  
-  doc.setFillColor(250, 250, 252);
-  doc.rect(0, 0, pageWidth, pageHeight, 'F');
-  
-  doc.setFillColor(14, 165, 233);
-  doc.circle(pageWidth / 2, 28, 12, 'F');
-  
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(14);
-  doc.setFont('helvetica', 'bold');
-  doc.text('S', pageWidth / 2, 30.5, { align: 'center' });
-  
-  doc.setTextColor(30, 41, 59);
-  doc.setFontSize(22);
-  doc.setFont('helvetica', 'bold');
-  doc.text('SENEFLIX', pageWidth / 2, 50, { align: 'center' });
-  
-  doc.setTextColor(100, 116, 139);
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'normal');
-  doc.text('BILLET DE CINÉMA', pageWidth / 2, 57, { align: 'center' });
-  
-  doc.setDrawColor(226, 232, 240);
-  doc.setLineWidth(0.3);
-  doc.line(margin, 63, pageWidth - margin, 63);
-  
-  doc.setFillColor(255, 255, 255);
-  doc.roundedRect(margin, 68, pageWidth - margin * 2, 35, 3, 3, 'F');
-  doc.setDrawColor(226, 232, 240);
-  doc.setLineWidth(0.2);
-  doc.roundedRect(margin, 68, pageWidth - margin * 2, 35, 3, 3, 'S');
-  
-  doc.setTextColor(100, 116, 139);
-  doc.setFontSize(8);
-  doc.setFont('helvetica', 'normal');
-  doc.text('FILM', margin + 5, 76);
-  
-  doc.setTextColor(30, 41, 59);
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'bold');
-  const titleLines = doc.splitTextToSize(booking.movieTitle, pageWidth - margin * 2 - 10);
-  doc.text(titleLines, margin + 5, 82);
-  
-  doc.setTextColor(100, 116, 139);
-  doc.setFontSize(8);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`N° ${booking.id}`, pageWidth - margin - 5, 76, { align: 'right' });
-  
-  doc.setFillColor(248, 250, 252);
-  doc.roundedRect(margin, 108, (pageWidth - margin * 2) / 2 - 2, 30, 2, 2, 'F');
-  doc.roundedRect(margin + (pageWidth - margin * 2) / 2 + 2, 108, (pageWidth - margin * 2) / 2 - 2, 30, 2, 2, 'F');
-  
-  doc.setTextColor(148, 163, 184);
-  doc.setFontSize(7);
-  doc.text('DATE', margin + 4, 116);
-  doc.text('HEURE', pageWidth / 2 + 4, 116);
-  
-  doc.setTextColor(30, 41, 59);
-  doc.setFontSize(11);
-  doc.setFont('helvetica', 'bold');
-  doc.text(booking.date, margin + 4, 123);
-  doc.text(booking.time, pageWidth / 2 + 4, 123);
-  
-  doc.setTextColor(148, 163, 184);
-  doc.setFontSize(7);
-  doc.setFont('helvetica', 'normal');
-  doc.text('CINÉMA', margin + 4, 132);
-  doc.text('SIÈGES', pageWidth / 2 + 4, 132);
-  
-  doc.setTextColor(30, 41, 59);
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'bold');
-  const cinemaLines = doc.splitTextToSize(booking.cinema, (pageWidth - margin * 2) / 2 - 8);
-  doc.text(cinemaLines, margin + 4, 137);
-  doc.text(booking.seats.join(', '), pageWidth / 2 + 4, 137);
-  
-  doc.setFillColor(14, 165, 233);
-  doc.roundedRect(margin, 145, pageWidth - margin * 2, 18, 2, 2, 'F');
-  
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(8);
-  doc.setFont('helvetica', 'normal');
-  doc.text('MONTANT TOTAL', pageWidth / 2, 151, { align: 'center' });
-  
-  doc.setFontSize(14);
-  doc.setFont('helvetica', 'bold');
-  doc.text(`${booking.totalPrice} FCFA`, pageWidth / 2, 159, { align: 'center' });
-  
-  doc.setTextColor(100, 116, 139);
-  doc.setFontSize(7);
-  doc.setFont('helvetica', 'italic');
-  doc.text('Arrivez 15 minutes avant la séance', pageWidth / 2, 172, { align: 'center' });
-  doc.text('Ce billet est personnel et non transférable', pageWidth / 2, 177, { align: 'center' });
-  
-  doc.setDrawColor(226, 232, 240);
-  doc.setLineWidth(0.3);
-  doc.line(margin, 185, pageWidth - margin, 185);
-  
-  doc.setFillColor(30, 41, 59);
-  doc.roundedRect(pageWidth / 2 - 18, 188, 36, 36, 2, 2, 'F');
-  
-  doc.setTextColor(30, 41, 59);
-  doc.setFontSize(5);
-  doc.setFont('helvetica', 'normal');
-  doc.text('SCANNEZ', pageWidth / 2, 227, { align: 'center' });
-  
-  doc.setFontSize(4);
-  doc.text(`TICKET-${booking.id}`, pageWidth / 2, 231, { align: 'center' });
-  
-  doc.save(`SENEFLIX_BILLET_${booking.id}.pdf`);
-}
 
 export default function DashboardPage() {
   const { bookings, removeBooking } = useBookings();
@@ -151,8 +28,8 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-                <div className="lg:col-span-1 space-y-6">
+        {/* Colonne Profil / Stats */}
+        <div className="lg:col-span-1 space-y-6">
           <div className="bg-dark-800 rounded-2xl p-6 border border-dark-700">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-16 h-16 bg-brand-500 rounded-full flex items-center justify-center text-xl font-bold">
@@ -178,7 +55,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-                <div className="lg:col-span-2 space-y-6">
+        {/* Colonne Billets */}
+        <div className="lg:col-span-2 space-y-6">
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <Ticket className="w-6 h-6 text-brand-500" />
             Mes Billets
@@ -207,7 +85,8 @@ export default function DashboardPage() {
                   booking.status === 'upcoming' ? 'border-brand-500/50' : 'border-dark-700'
                 } flex flex-col sm:flex-row`}
               >
-                                <div className="w-full sm:w-32 md:w-40 shrink-0">
+                {/* Poster du film */}
+                <div className="w-full sm:w-32 md:w-40 shrink-0">
                   <img 
                     src={booking.moviePoster} 
                     alt={booking.movieTitle}
@@ -218,7 +97,8 @@ export default function DashboardPage() {
                   />
                 </div>
 
-                                <div className="p-6 flex-grow">
+                {/* Détails du billet */}
+                <div className="p-6 flex-grow">
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <span className={`text-xs font-semibold px-2 py-1 rounded-full uppercase tracking-wider ${
@@ -264,27 +144,22 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 
+                {/* QR Code */}
                 <div className="bg-dark-900 p-6 sm:w-48 flex flex-col items-center justify-center border-t sm:border-t-0 sm:border-l border-dark-700 border-dashed">
                   <div className="bg-white p-2 rounded-lg mb-3">
                     <QRCodeSVG 
-                      value={`SENEFLIX-TICKET-${booking.id}-${booking.movieTitle}`} 
+                      value={`TICKET-${booking.id}`}
                       size={80}
                       level="H"
+                      includeMargin={false}
                     />
                   </div>
-                  <button 
-                    onClick={() => generatePDF(booking)}
-                    className="flex items-center gap-2 text-sm text-brand-500 hover:text-brand-400 font-medium transition-colors"
-                  >
-                    <Download className="w-4 h-4" />
-                    Téléchargez votre billet
-                  </button>
+                  <span className="text-[10px] text-gray-500 font-mono">SCANNER POUR ENTRER</span>
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );
