@@ -133,20 +133,7 @@ export default function Header() {
 className="md:hidden bg-dark-800/98 backdrop-blur-xl border-t border-white/5"
           >
             <div className="px-4 py-6 space-y-2">
-              <Link
-                to="/dashboard"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                  isActive('/dashboard')
-                    ? 'text-white bg-white/10'
-                    : 'text-gray-300 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <LayoutDashboard className="w-5 h-5" />
-                Tableau de bord
-              </Link>
-
-              <div className="pt-4 border-t border-white/5 my-4">
+              <div className="pb-4 border-b border-white/5 mb-4">
                 {isAuthenticated ? (
                   <div className="space-y-4">
                     <div className="flex items-center gap-3 px-4">
@@ -196,6 +183,21 @@ className="md:hidden bg-dark-800/98 backdrop-blur-xl border-t border-white/5"
                   </div>
                 )}
               </div>
+
+              {isAuthenticated && (
+                 <Link
+                   to="/dashboard"
+                   onClick={() => setMobileMenuOpen(false)}
+                   className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                     isActive('/dashboard')
+                       ? 'text-white bg-white/10'
+                       : 'text-gray-300 hover:text-white hover:bg-white/5'
+                   }`}
+                 >
+                   <LayoutDashboard className="w-5 h-5" />
+                   Tableau de bord
+                 </Link>
+               )}
             </div>
           </motion.div>
         )}
