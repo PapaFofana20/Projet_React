@@ -133,9 +133,9 @@ export default function Header() {
 className="md:hidden bg-dark-800/98 backdrop-blur-xl border-t border-white/5"
           >
             <div className="px-4 py-6 space-y-2">
-              <div className="pb-4 border-b border-white/5 mb-4">
-                {isAuthenticated ? (
-                  <div className="space-y-4">
+              {isAuthenticated && (
+                <>
+                  <div className="pb-4 border-b border-white/5 mb-4">
                     <div className="flex items-center gap-3 px-4">
                       <div className="w-12 h-12 bg-gradient-to-br from-brand-500 to-red-600 rounded-full flex items-center justify-center text-lg font-bold text-white">
                         {user?.name?.charAt(0).toUpperCase() || 'U'}
@@ -145,16 +145,35 @@ className="md:hidden bg-dark-800/98 backdrop-blur-xl border-t border-white/5"
                         <p className="text-xs text-gray-500">{user?.email || 'utilisateur@email.com'}</p>
                       </div>
                     </div>
-                    
-                    <Link
-                      to="/profile"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all"
-                    >
-                      <User className="w-5 h-5" />
-                      Mon Profil
-                    </Link>
+                  </div>
 
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                      isActive('/dashboard')
+                        ? 'text-white bg-white/10'
+                        : 'text-gray-300 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <LayoutDashboard className="w-5 h-5" />
+                    Tableau de bord
+                  </Link>
+
+                  <Link
+                    to="/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                      isActive('/profile')
+                        ? 'text-white bg-white/10'
+                        : 'text-gray-300 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <User className="w-5 h-5" />
+                    Mon Profil
+                  </Link>
+
+                  <div className="pt-4 border-t border-white/5 mt-4">
                     <button
                       onClick={handleLogout}
                       className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all"
@@ -163,41 +182,28 @@ className="md:hidden bg-dark-800/98 backdrop-blur-xl border-t border-white/5"
                       Se déconnecter
                     </button>
                   </div>
-                ) : (
-                  <div className="space-y-3">
-                    <Link
-                      to="/login"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center justify-center gap-2 w-full px-4 py-3.5 rounded-xl text-sm font-medium text-white border border-white/20 hover:bg-white/5 transition-all"
-                    >
-                      <User className="w-5 h-5" />
-                      Connexion
-                    </Link>
-                    <Link
-                      to="/register"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center justify-center gap-2 w-full px-4 py-3.5 rounded-xl text-sm font-semibold text-white bg-[#E50914] hover:bg-[#F40612] transition-all"
-                    >
-                      S'inscrire
-                    </Link>
-                  </div>
-                )}
-              </div>
+                </>
+              )}
 
-              {isAuthenticated && (
-                 <Link
-                   to="/dashboard"
-                   onClick={() => setMobileMenuOpen(false)}
-                   className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                     isActive('/dashboard')
-                       ? 'text-white bg-white/10'
-                       : 'text-gray-300 hover:text-white hover:bg-white/5'
-                   }`}
-                 >
-                   <LayoutDashboard className="w-5 h-5" />
-                   Tableau de bord
-                 </Link>
-               )}
+              {!isAuthenticated && (
+                <div className="space-y-3 pt-4">
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-3.5 rounded-xl text-sm font-medium text-white border border-white/20 hover:bg-white/5 transition-all"
+                  >
+                    <User className="w-5 h-5" />
+                    Connexion
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full px-4 py-3.5 rounded-xl text-sm font-semibold text-white bg-[#E50914] hover:bg-[#F40612] transition-all"
+                  >
+                    S'inscrire
+                  </Link>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
