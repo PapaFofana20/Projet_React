@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Info, Star, Clock, Ticket, ChevronRight, Sparkles, Flame, ChevronLeft } from 'lucide-react';
+import { Info, Star, Clock, Ticket, Sparkles, Flame } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { movies } from '../data/movies';
 
@@ -240,8 +240,7 @@ export default function LandingPage() {
     return () => clearInterval(interval);
   }, [isHovered]);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+
 
   return (
     <div className="flex flex-col min-h-screen bg-dark-900">
@@ -334,19 +333,7 @@ export default function LandingPage() {
           ))}
         </div>
 
-        {/* Boutons de navigation */}
-        <button 
-          onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all z-20 backdrop-blur-sm"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-        <button 
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all z-20 backdrop-blur-sm"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
+
 
         {/* Indicateurs */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
