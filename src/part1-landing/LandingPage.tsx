@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Info, Star, Clock, Ticket, Sparkles, Flame } from 'lucide-react';
+import { Info, Star, Clock, Ticket, Sparkles, Flame, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { movies } from '../data/movies';
 
