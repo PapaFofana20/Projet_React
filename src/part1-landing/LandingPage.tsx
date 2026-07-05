@@ -20,7 +20,7 @@ const carouselImages = [
   },
   { 
     id: 18, 
-    src: '/carousel/who.jpg', 
+    src: '/carousel/Who_carrosel.png', 
     title: 'WHO',
     movieId: 30,
     isNew: true,

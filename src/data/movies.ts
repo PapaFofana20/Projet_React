@@ -223,8 +223,8 @@ export const movies = [
   {
     id: 30,
     title: "WHO",
-    image: "/posters/who.jpg",
-    poster: "/posters/who.jpg",
+    image: "/posters/Who.png",
+    poster: "/posters/Who.png",
     rating: 7.0,
     duration: "1h 45m",
     genre: "Thriller / Mystère",
