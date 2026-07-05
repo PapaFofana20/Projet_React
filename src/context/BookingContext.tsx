@@ -13,6 +13,7 @@ export interface Booking {
   totalPrice: number;
   status: 'upcoming' | 'past';
   createdAt: string;
+  transactionId?: string;
 }
 
 interface BookingContextType {

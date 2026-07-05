@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENEFLIX - Tableau de Bord Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --accent-red: #e63946;
+            --accent-red-glow: rgba(230, 57, 70, 0.6);
+            --text-white: #ffffff;
+            --text-gray: #8a8a8a;
+            --text-light-gray: #b3b3b3;
+            --card-bg: rgba(20, 20, 20, 0.85);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --input-bg: rgba(30, 30, 30, 0.6);
+            --success-green: #10b981;
+            --warning-yellow: #f59e0b;
+            --info-blue: #3b82f6;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            min-height: 100vh;
+            color: var(--text-white);
+        }
+
+        /* Header */
+        .header {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .logo-text span {
+            color: var(--accent-red);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+
+        .btn-logout {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: var(--accent-red);
+            color: var(--text-white);
+        }
+
+        /* Main Content */
+        .main {
+            padding: 32px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: var(--text-gray);
+            margin-bottom: 32px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon.revenue { background: rgba(16, 185, 129, 0.15); color: var(--success-green); }
+        .stat-icon.bookings { background: rgba(59, 130, 246, 0.15); color: var(--info-blue); }
+        .stat-icon.users { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+        .stat-icon.movies { background: rgba(230, 57, 70, 0.15); color: var(--accent-red); }
+
+        .stat-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        .stat-trend.up { color: var(--success-green); }
+        .stat-trend.down { color: #ef4444; }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Tables */
+        .tables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        th {
+            color: var(--text-gray);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge.confirmed { background: rgba(16, 185, 129, 0.15); color: var(--success-green); }
+        .badge.pending { background: rgba(245, 158, 11, 0.15); color: var(--warning-yellow); }
+        .badge.cancelled { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            color: var(--text-gray);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--card-border);
+            border-top-color: var(--accent-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Unauthorized State */
+        .unauthorized {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+        }
+
+        .unauthorized-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(239, 68, 68, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .unauthorized-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #ef4444;
+        }
+
+        .unauthorized h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .unauthorized p {
+            color: var(--text-gray);
+            margin-bottom: 24px;
+        }
+
+        .btn-home {
+            padding: 12px 24px;
+            background: var(--accent-red);
+            color: var(--text-white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.3);
+        }
+
+        /* Payment Methods */
+        .payment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .payment-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--input-bg);
+            border-radius: 10px;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .payment-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-icon.cash { background: rgba(16, 185, 129, 0.15); color: var(--success-green); }
+        .payment-icon.orange { background: rgba(255, 165, 0, 0.15); color: #ffa500; }
+        .payment-icon.wav { background: rgba(59, 130, 246, 0.15); color: var(--info-blue); }
+        .payment-icon.card { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+
+        .payment-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--card-border);
+            border-radius: 4px;
+            margin: 0 16px;
+            overflow: hidden;
+        }
+
+        .payment-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .payment-fill.cash { background: var(--success-green); }
+        .payment-fill.orange { background: #ffa500; }
+        .payment-fill.wav { background: var(--info-blue); }
+        .payment-fill.card { background: #8b5cf6; }
+
+        .payment-percent {
+            font-weight: 600;
+            min-width: 45px;
+            text-align: right;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-white);
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 16px;
+            }
+
+            .main {
+                padding: 16px;
+            }
+
+            .user-name, .user-role {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tables-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            padding: 10px 20px;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-white);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .quick-btn:hover {
+            background: rgba(230, 57, 70, 0.1);
+            border-color: var(--accent-red);
+        }
+
+        .quick-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Notification dot */
+        .notification-dot {
+            position: relative;
+        }
+
+        .notification-dot::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            border: 2px solid var(--bg-dark);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <a href="#" class="logo">
+                <svg class="logo-icon" viewBox="0 0 72 72" fill="none">
+                    <rect x="8" y="24" width="56" height="40" rx="4" fill="#1a1a1a" stroke="#e63946" stroke-width="2"/>
+                    <path d="M8 28h56v4H8z" fill="#e63946"/>
+                    <path d="M8 36h8v4H8zM20 36h8v4h-8zM32 36h8v4h-8zM44 36h8v4h-8zM56 36h8v4h-8z" fill="#e63946" opacity="0.7"/>
+                    <path d="M8 24l14-12 10 8 12-10 14 12" stroke="#e63946" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="logo-text">SENE<span>FLIX</span></span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar">A</div>
+                <div>
+                    <div class="user-name" id="user-name">Admin</div>
+                    <div class="user-role">Administrateur</div>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="logout()">Déconnexion</button>
+        </div>
+    </header>
+
+    <main class="main" id="main-content">
+        <div class="loading">
+            <div class="spinner"></div>
+            Chargement des données...
+        </div>
+    </main>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        // Check authentication on load
+        async function checkAuth() {
+            const token = localStorage.getItem('accessToken');
+            const userStr = localStorage.getItem('user');
+
+            if (!token || !userStr) {
+                showUnauthorized();
+                return null;
+            }
+
+            const user = JSON.parse(userStr);
+            
+            // Check if user is admin
+            const isAdmin = user.roles && user.roles.some(r => r.name === 'admin');
+            
+            if (!isAdmin) {
+                showUnauthorized();
+                return null;
+            }
+
+            return { token, user };
+        }
+
+        function showUnauthorized() {
+            document.getElementById('main-content').innerHTML = `
+                <div class="unauthorized">
+                    <div class="unauthorized-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                    </div>
+                    <h2>Accès restreint</h2>
+                    <p>Vous n'avez pas les droits pour accéder à cette page.</p>
+                    <a href="index.html" class="btn-home">Retour à l'accueil</a>
+                </div>
+            `;
+        }
+
+        async function loadDashboard() {
+            const auth = await checkAuth();
+            if (!auth) return;
+
+            const { token, user } = auth;
+
+            // Update user info
+            document.getElementById('user-name').textContent = `${user.firstName} ${user.lastName}`;
+            document.getElementById('user-avatar').textContent = user.firstName.charAt(0).toUpperCase();
+
+            try {
+                // Fetch all data in parallel
+                const [dashboard, monthlyStats, topMovies, recentBookings, paymentAnalysis] = await Promise.all([
+                    fetchWithAuth('/admin/dashboard', token),
+                    fetchWithAuth('/admin/stats/monthly', token),
+                    fetchWithAuth('/admin/movies/top?limit=5', token),
+                    fetchWithAuth('/admin/bookings/recent?limit=5', token),
+                    fetchWithAuth('/admin/payments/analysis', token),
+                ]);
+
+                renderDashboard(dashboard, monthlyStats, topMovies, recentBookings, paymentAnalysis);
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                document.getElementById('main-content').innerHTML = `
+                    <div class="unauthorized">
+                        <h2>Erreur de chargement</h2>
+                        <p>Impossible de charger les données. Veuillez réessayer.</p>
+                        <button class="btn-home" onclick="loadDashboard()">Réessayer</button>
+                    </div>
+                `;
+            }
+        }
+
+        async function fetchWithAuth(endpoint, token) {
+            const response = await fetch(`${API_URL}${endpoint}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.status === 401) {
+                // Token expired, try refresh
+                const refreshed = await refreshToken();
+                if (refreshed) {
+                    return fetchWithAuth(endpoint, refreshed);
+                }
+                logout();
+                return null;
+            }
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+
+            return response.json();
+        }
+
+        async function refreshToken() {
+            const refreshToken = localStorage.getItem('refreshToken');
+            if (!refreshToken) return null;
+
+            try {
+                const response = await fetch(`${API_URL}/auth/refresh`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${refreshToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) return null;
+
+                const data = await response.json();
+                localStorage.setItem('accessToken', data.accessToken);
+                if (data.refreshToken) {
+                    localStorage.setItem('refreshToken', data.refreshToken);
+                }
+                return data.accessToken;
+            } catch {
+                return null;
+            }
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('fr-FR').format(amount) + ' FCFA';
+        }
+
+        function formatDate(dateStr) {
+            return new Date(dateStr).toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function renderDashboard(dashboard, monthlyStats, topMovies, recentBookings, paymentAnalysis) {
+            document.getElementById('main-content').innerHTML = `
+                <h1 class="page-title">Tableau de Bord</h1>
+                <p class="page-subtitle">Vue d'ensemble de SENEFLIX - ${new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">${formatCurrency(dashboard.revenue.thisMonth)}</div>
+                                <div class="stat-label">Chiffre d'affaires (Ce mois)</div>
+                            </div>
+                            <div class="stat-icon revenue">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"/>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-trend up">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                <polyline points="17 6 23 6 23 12"/>
+                            </svg>
+                            Total: ${formatCurrency(dashboard.revenue.total)}
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">${dashboard.bookings.thisMonth}</div>
+                                <div class="stat-label">Billets réservés (Ce mois)</div>
+                            </div>
+                            <div class="stat-icon bookings">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2z"/>
+                                    <path d="M13 5v2"/>
+                                    <path d="M13 17v2"/>
+                                    <path d="M13 11v2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-trend">
+                            <span style="color: var(--success-green)">${dashboard.bookings.confirmed}</span> confirmées / 
+                            <span style="color: var(--warning-yellow)">${dashboard.bookings.pending}</span> en attente
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">${dashboard.users.total}</div>
+                                <div class="stat-label">Utilisateurs inscrits</div>
+                            </div>
+                            <div class="stat-icon users">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-trend">
+                            <span style="color: var(--success-green)">+${dashboard.users.thisMonth}</span> ce mois / 
+                            <span>${dashboard.users.active}</span> actifs
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">${dashboard.movies.total}</div>
+                                <div class="stat-label">Films au catalogue</div>
+                            </div>
+                            <div class="stat-icon movies">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+                                    <line x1="7" y1="2" x2="7" y2="22"/>
+                                    <line x1="17" y1="2" x2="17" y2="22"/>
+                                    <line x1="2" y1="12" x2="22" y2="12"/>
+                                    <line x1="2" y1="7" x2="7" y2="7"/>
+                                    <line x1="2" y1="17" x2="7" y2="17"/>
+                                    <line x1="17" y1="17" x2="22" y2="17"/>
+                                    <line x1="17" y1="7" x2="22" y2="7"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-trend">
+                            <span style="color: var(--accent-red)">${dashboard.movies.showing}</span> à l'affiche / 
+                            ${dashboard.sessions.active} séances actives
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="charts-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Évolution des revenus</div>
+                                <div class="card-subtitle">12 derniers mois</div>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Méthodes de paiement</div>
+                                <div class="card-subtitle">Répartition des transactions</div>
+                            </div>
+                        </div>
+                        <div class="payment-list">
+                            ${paymentAnalysis.map(p => `
+                                <div class="payment-item">
+                                    <div class="payment-method">
+                                        <div class="payment-icon ${p.method}">
+                                            ${getPaymentIcon(p.method)}
+                                        </div>
+                                        <span>${formatPaymentMethod(p.method)}</span>
+                                    </div>
+                                    <div class="payment-bar">
+                                        <div class="payment-fill ${p.method}" style="width: ${p.percentage}%"></div>
+                                    </div>
+                                    <span class="payment-percent">${p.percentage}%</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tables -->
+                <div class="tables-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Réservations récentes</div>
+                                <div class="card-subtitle">Dernières transactions</div>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Film</th>
+                                        <th>Client</th>
+                                        <th>Montant</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${recentBookings.map(b => `
+                                        <tr>
+                                            <td><strong>${b.bookingCode}</strong></td>
+                                            <td>${b.session?.movie?.title || 'N/A'}</td>
+                                            <td>${b.user?.email || b.viewerEmail || 'Guest'}</td>
+                                            <td>${formatCurrency(b.totalPrice)}</td>
+                                            <td><span class="badge ${b.status}">${formatStatus(b.status)}</span></td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Top Films</div>
+                                <div class="card-subtitle">Les plus populaires</div>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Film</th>
+                                        <th>Note</th>
+                                        <th>Réservations</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${topMovies.map(m => `
+                                        <tr>
+                                            <td>
+                                                <div style="display: flex; align-items: center; gap: 12px;">
+                                                    <img src="${m.posterUrl || 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 150%22><rect fill=%22%23333%22 width=%22100%22 height=%22150%22/><text x=%2250%22 y=%2280%22 fill=%22%23666%22 text-anchor=%22middle%22>🎬</text></svg>'}" 
+                                                        alt="${m.title}" 
+                                                        style="width: 32px; height: 48px; object-fit: cover; border-radius: 4px;">
+                                                    <div>
+                                                        <div style="font-weight: 500;">${m.title}</div>
+                                                        <div style="font-size: 12px; color: var(--text-gray);">${m.director}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span style="color: var(--warning-yellow);">★</span> 
+                                                ${m.averageRating.toFixed(1)}
+                                            </td>
+                                            <td>${m.bookingCount || 0}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Render revenue chart
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: monthlyStats.map(s => s.month),
+                    datasets: [{
+                        label: 'Revenus (FCFA)',
+                        data: monthlyStats.map(s => s.revenue),
+                        borderColor: '#e63946',
+                        backgroundColor: 'rgba(230, 57, 70, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#e63946',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return formatCurrency(context.raw);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: '#8a8a8a'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: '#8a8a8a',
+                                callback: function(value) {
+                                    return (value / 1000) + 'k';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function formatPaymentMethod(method) {
+            const methods = {
+                'cash': 'Espèces',
+                'orange_money': 'Orange Money',
+                'wav_money': 'Wave',
+                'card': 'Carte bancaire'
+            };
+            return methods[method] || method;
+        }
+
+        function getPaymentIcon(method) {
+            const icons = {
+                'cash': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+                'orange_money': '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>',
+                'wav_money': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12C2 6.5 6.5 2 12 2s10 4.5 10 10-4.5 10-10 10S2 17.5 2 12z"/></svg>',
+                'card': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>'
+            };
+            return icons[method] || '';
+        }
+
+        function formatStatus(status) {
+            const statuses = {
+                'pending': 'En attente',
+                'confirmed': 'Confirmée',
+                'cancelled': 'Annulée',
+                'completed': 'Terminée'
+            };
+            return statuses[status] || status;
+        }
+
+        function logout() {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+
+        // Load dashboard on page load
+        loadDashboard();
+    </script>
+</body>
+</html>

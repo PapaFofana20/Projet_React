@@ -1,109 +1,362 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Info, Star, Clock, Ticket, ChevronRight, Sparkles, Flame, Zap } from 'lucide-react';
+import { Info, Star, Clock, Ticket, ChevronRight, Sparkles, Flame, ChevronLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { movies } from '../data/movies';
 
+// Données des images du carrousel (dossier public/carousel) - avec infos complètes du film
+const carouselImages = [
+  { 
+    id: 19, 
+    src: '/carousel/spider-man-brand-new-day.jpg', 
+    title: 'Spider Man: Brand New Day',
+    movieId: 31,
+    isNew: true,
+    isExclusive: true,
+    genre: 'Action / Aventure / Science-Fiction',
+    duration: '2h 30m',
+    rating: 8.5,
+    description: "Peter Parker entame un nouveau chapitre de sa vie avec de nouveaux pouvoirs et de nouveaux defis."
+  },
+  { 
+    id: 18, 
+    src: '/carousel/who.jpg', 
+    title: 'WHO',
+    movieId: 30,
+    isNew: true,
+    isExclusive: true,
+    genre: 'Thriller / Mystère',
+    duration: '1h 45m',
+    rating: 7.0,
+    description: "Un thriller haletant qui explore les profondeurs de l'identité et de la vérité."
+  },
+  { 
+    id: 17, 
+    src: '/carousel/micheal-carousel.jpg', 
+    title: 'Micheal',
+    movieId: 28,
+    isNew: true,
+    isExclusive: true,
+    genre: 'Drame / Biographie',
+    duration: '2h 15m',
+    rating: 8.2,
+    description: 'Lhistoire vraie et tragique de la légende du king of pop.'
+  },
+  { 
+    id: 15, 
+    src: '/carousel/shelter.jpg', 
+    title: 'Shelter',
+    movieId: 29,
+    isNew: true,
+    isExclusive: false,
+    genre: 'Drame / Romance',
+    duration: '1h 55m',
+    rating: 6.8,
+    description: 'Une histoire émouvante sur lamour, le sacrifice et le sens de la vie.'
+  },
+  { 
+    id: 14, 
+    src: '/carousel/furiosa.jpg', 
+    title: 'Furiosa',
+    movieId: 25,
+    isNew: true,
+    isExclusive: false,
+    genre: 'Action / Aventure / Science-Fiction',
+    duration: '2h 28m',
+    rating: 7.6,
+    description: 'Lhistoire de Furiosa avant les événements de Mad Max: Fury Road.'
+  },
+  { 
+    id: 13, 
+    src: '/carousel/afterburn.jpg', 
+    title: 'Afterburn',
+    movieId: 27,
+    isNew: true,
+    isExclusive: false,
+    genre: 'Action / Thriller',
+    duration: '1h 54m',
+    rating: 6.8,
+    description: 'Un pompier héroïque devient obsédé par la recherche de vérité après avoir survécu à un incident tragique.'
+  },
+  { 
+    id: 12, 
+    src: '/carousel/deadpool-wolverine.png', 
+    title: 'Deadpool & Wolverine',
+    movieId: 3,
+    isNew: true,
+    isExclusive: true,
+    genre: 'Action / Comédie / Science-Fiction',
+    duration: '2h 7m',
+    rating: 7.6,
+    description: 'Lexistence paisible de Deadpool souvire lorsquil est recruté par la Time Variance Authority.'
+  },
+  { 
+    id: 11, 
+    src: '/carousel/sinners.jpg', 
+    title: 'Sinners',
+    movieId: 21,
+    isNew: true,
+    isExclusive: true,
+    genre: 'Horreur / Thriller / Surnaturel',
+    duration: '2h 18m',
+    rating: 7.5,
+    description: 'En 1932, deux jumeaux reviennent dans leur ville natale du Mississippi et découvrent une présence maléfique.'
+  },
+  { 
+    id: 10, 
+    src: '/carousel/vaiana.jpg', 
+    title: 'Vaiana 2',
+    movieId: 26,
+    isNew: true,
+    isExclusive: true,
+    genre: 'Animation / Aventure / Comédie',
+    duration: '1h 40m',
+    rating: 7.3,
+    description: 'Moana et Maui sont de retour pour une nouvelle aventure aux confins des océans du Pacifique.'
+  },
+  { 
+    id: 9, 
+    src: '/carousel/zootopie-2.jpg', 
+    title: 'Zootopie 2',
+    movieId: 18,
+    isNew: true,
+    isExclusive: true,
+    genre: 'Animation / Aventure / Comédie',
+    duration: '1h 48m',
+    rating: 7.4,
+    description: 'Judy Hopps et Nick Wilde reviennent pour une nouvelle aventure palpitante.'
+  },
+  { 
+    id: 8, 
+    src: '/carousel/wicked.jpg', 
+    title: 'Wicked',
+    movieId: 4,
+    isNew: true,
+    isExclusive: false,
+    genre: 'Fantastique / Musical',
+    duration: '2h 40m',
+    rating: 7.4,
+    description: 'Lextraordinaire sorcière de lOuest et Glinda la Bonne occupent le devant de la scène.'
+  },
+  { 
+    id: 7, 
+    src: '/carousel/mission-impossible.jpg', 
+    title: 'Mission: Impossible',
+    movieId: 16,
+    isNew: true,
+    isExclusive: true,
+    genre: 'Action / Thriller',
+    duration: '2h 49m',
+    rating: 7.2,
+    description: 'Ethan Hunt et son équipe du FMI se lancent dans leur mission la plus dangereuse à ce jour.'
+  },
+  { 
+    id: 6, 
+    src: '/carousel/gladiator-ii.jpg', 
+    title: 'Gladiator II',
+    movieId: 1,
+    isNew: true,
+    isExclusive: true,
+    genre: 'Action / Drame / Historique',
+    duration: '2h 28m',
+    rating: 6.5,
+    description: 'Lucius est forcé dentrer dans le Colisée pour affronter les empereurs tyranniques qui dirigent Rome.'
+  },
+  { 
+    id: 5, 
+    src: '/carousel/captain-america.jpg', 
+    title: 'Captain America',
+    movieId: 20,
+    isNew: true,
+    isExclusive: true,
+    genre: 'Action / Aventure / Science-Fiction',
+    duration: '1h 58m',
+    rating: 6.3,
+    description: 'Sam Wilson prend le bouclier de Captain America et se retrouve au milieu dun incident international.'
+  },
+  { 
+    id: 4, 
+    src: '/carousel/kaamelott.webp', 
+    title: 'Kaamelott',
+    movieId: 17,
+    isNew: true,
+    isExclusive: false,
+    genre: 'Comédie / Aventure / Fantastique',
+    duration: '2h 19m',
+    rating: 6.1,
+    description: 'Arthur doit prouver sa légitimité en tant que roi face à de nouvelles menaces venues des dieux celtes.'
+  },
+  { 
+    id: 3, 
+    src: '/carousel/joker-folie-a-deux.jpg', 
+    title: 'Joker: Folie à Deux',
+    movieId: 22,
+    isNew: true,
+    isExclusive: false,
+    genre: 'Crime / Drame / Thriller',
+    duration: '2h 18m',
+    rating: 5.2,
+    description: 'Arthur Fleck est emprisonné à Arkham en attendant son procès pour les crimes commis en tant que Joker.'
+  },
+  { 
+    id: 2, 
+    src: '/carousel/les-4-fantastiques.jpg', 
+    title: 'Les 4 Fantastiques',
+    movieId: 23,
+    isNew: true,
+    isExclusive: false,
+    genre: 'Action / Aventure / Science-Fiction',
+    duration: '1h 54m',
+    rating: 7.3,
+    description: 'Les Quatre Fantastiques doivent maîtriser leur pouvoir extraordinaire et affronter Galactus.'
+  },
+  { 
+    id: 1, 
+    src: '/carousel/superman.jpg', 
+    title: 'Superman', 
+    movieId: 19,
+    isNew: true,
+    isExclusive: true,
+    genre: 'Action / Aventure / Drame',
+    duration: '2h 9m',
+    rating: 7.5,
+    description: 'Superman, le dernier fils de Krypton, découvre sa vraie identité et embrasse son destin de héros.'
+  },
+];
+
 export default function LandingPage() {
-  const featuredMovie = movies[0]; 
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  
   const newReleases = movies.filter(m => m.isNew);
   const exclusiveMovies = movies.filter(m => m.isExclusive);
 
+  // Auto-scroll du carrousel
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isHovered]);
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+
   return (
     <div className="flex flex-col min-h-screen bg-dark-900">
-            <section className="relative h-[80vh] sm:h-screen w-full flex items-end pb-12 sm:pb-20 md:pb-24 overflow-hidden">
-                <div className="absolute inset-0">
-          <motion.div 
-            initial={{ scale: 1.05 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 1.5 }}
-            className="absolute inset-0"
-          >
-            <picture>
-              <source media="(min-width: 768px)" srcSet={featuredMovie.image} />
+      {/* Carrousel Principal - Page d'Accueil */}
+      <section 
+        className="relative h-[85vh] sm:h-[90vh] w-full overflow-hidden"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="absolute inset-0 flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+          {carouselImages.map((slide, index) => (
+            <div key={slide.id} className="relative w-full h-[85vh] sm:h-[90vh] flex-shrink-0">
               <img 
-                src={featuredMovie.poster} 
-                alt={featuredMovie.title} 
-                className="w-full h-full object-cover object-top lg:object-[center_20%]"
+                src={slide.src} 
+                alt={slide.title}
+                className="w-full h-full object-cover"
               />
-            </picture>
-          </motion.div>
-          
-                    <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/60 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-dark-900/80 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-black/30"></div>
-          
-                    <div className="absolute inset-0 bg-gradient-to-br from-brand-500/10 via-transparent to-yellow-500/5 animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-dark-900/80 via-dark-900/30 to-transparent" />
+              
+              {/* Contenu du film */}
+              <div className="absolute bottom-12 sm:bottom-16 md:bottom-20 left-4 sm:left-8 md:left-16 right-4 sm:right-8 md:right-16 lg:right-[30%]">
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: index === currentSlide ? 1 : 0, y: index === currentSlide ? 0 : 30 }}
+                  transition={{ duration: 0.6 }}
+                  className="max-w-3xl"
+                >
+                  {/* Badges */}
+                  <div className="flex flex-wrap items-center gap-2 mb-3 sm:mb-4">
+                    {slide.isNew && (
+                      <span className="inline-flex items-center gap-1.5 bg-brand-500 text-white text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg shadow-brand-500/50">
+                        <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                        NOUVEAU
+                      </span>
+                    )}
+                    {slide.isExclusive && (
+                      <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-yellow-500 to-amber-500 text-black text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg shadow-yellow-500/30">
+                        <Flame className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                        EXCLUSIF
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Titre */}
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 sm:mb-4 text-white tracking-tighter uppercase leading-none drop-shadow-2xl">
+                    {slide.title}
+                  </h1>
+                  
+                  {/* Infos */}
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-4 sm:mb-6 text-xs sm:text-sm">
+                    <span className="border border-white/30 text-white/90 px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium">
+                      {slide.genre.split('/')[0].trim()}
+                    </span>
+                    <span className="text-white/70 flex items-center gap-1">
+                      <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                      {slide.duration}
+                    </span>
+                    <span className="flex items-center gap-1 text-yellow-400 font-bold">
+                      <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-current" /> 
+                      {slide.rating}
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-sm sm:text-base text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-2xl drop-shadow-lg line-clamp-2 sm:line-clamp-3">
+                    {slide.description}
+                  </p>
+
+                  {/* Boutons */}
+                  <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                    <Link 
+                      to={`/book/${slide.movieId}/seats`}
+                      className="group flex items-center gap-2 sm:gap-3 bg-red-600 text-white px-5 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-lg hover:bg-red-700 transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl"
+                    >
+                      <Ticket className="w-5 h-5 sm:w-6 sm:h-6 fill-current group-hover:rotate-12 transition-transform" />
+                      Réserver
+                    </Link>
+                    <Link 
+                      to={`/movie/${slide.movieId}`}
+                      className="group flex items-center gap-2 sm:gap-3 bg-white/20 backdrop-blur-md text-white px-5 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-lg hover:bg-white/30 transition-all duration-300 border border-white/20"
+                    >
+                      <Info className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" />
+                      Détails
+                    </Link>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          ))}
         </div>
 
-                <div className="relative z-10 px-4 sm:px-6 md:px-8 lg:px-12 max-w-7xl mx-auto w-full mb-4 sm:mb-12 md:mb-16">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-3xl"
-          >
-                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-              {featuredMovie.isNew && (
-                <motion.span 
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="inline-flex items-center gap-1.5 bg-brand-500 text-white text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg shadow-brand-500/50"
-                >
-                  <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                  NOUVEAU
-                </motion.span>
-              )}
-              {featuredMovie.isExclusive && (
-                <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-yellow-500 to-amber-500 text-black text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg shadow-yellow-500/30">
-                  <Flame className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                  EXCLUSIF
-                </span>
-              )}
-            </div>
+        {/* Boutons de navigation */}
+        <button 
+          onClick={prevSlide}
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all z-20 backdrop-blur-sm"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button 
+          onClick={nextSlide}
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all z-20 backdrop-blur-sm"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
 
-                        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-2 sm:mb-4 text-white tracking-tighter uppercase leading-none drop-shadow-2xl">
-              {featuredMovie.title}
-            </h1>
-            
-                        <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-4 sm:mb-6 text-xs sm:text-sm">
-              <span className="flex items-center gap-1 text-green-400 font-bold">
-                <Zap className="w-3 h-3 sm:w-4 sm:h-4 fill-current" />
-                97% de correspondance
-              </span>
-              <span className="border border-white/30 text-white/90 px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium">
-                {featuredMovie.genre.split('/')[0].trim()}
-              </span>
-              <span className="text-white/70 flex items-center gap-1">
-                <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
-                {featuredMovie.duration}
-              </span>
-              <span className="flex items-center gap-1 text-yellow-400 font-bold">
-                <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-current" /> 
-                {featuredMovie.rating}
-              </span>
-            </div>
-
-                        <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-2xl drop-shadow-lg line-clamp-2 sm:line-clamp-3">
-              {featuredMovie.description}
-            </p>
-
-                        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-              <Link 
-                to={`/book/${featuredMovie.id}/seats`}
-                className="group flex items-center gap-2 sm:gap-3 bg-red-600 text-white px-5 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-lg hover:bg-red-700 transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl"
-              >
-                <Ticket className="w-5 h-5 sm:w-6 sm:h-6 fill-current group-hover:rotate-12 transition-transform" />
-                Réserver
-              </Link>
-              <Link 
-                to={`/movie/${featuredMovie.id}`}
-                className="group flex items-center gap-2 sm:gap-3 bg-white/20 backdrop-blur-md text-white px-5 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-lg hover:bg-white/30 transition-all duration-300 border border-white/20"
-              >
-                <Info className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" />
-                Détails
-              </Link>
-            </div>
-          </motion.div>
+        {/* Indicateurs */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+          {carouselImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all ${index === currentSlide ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/70'}`}
+            />
+          ))}
         </div>
       </section>
 
