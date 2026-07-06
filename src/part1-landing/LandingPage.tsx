@@ -483,7 +483,7 @@ export default function LandingPage() {
         </h2>
         
         <div className="flex gap-6 sm:gap-8 overflow-x-auto pb-8 pt-4 scrollbar-hide snap-x scroll-smooth">
-          {movies.slice(0, 10).map((movie, idx) => (
+          {[...movies].sort((a, b) => b.rating - a.rating).slice(0, 10).map((movie, idx) => (
             <motion.div 
               key={`top-${movie.id}`}
               initial={{ opacity: 0, x: 20 }}
