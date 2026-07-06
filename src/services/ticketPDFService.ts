@@ -132,20 +132,12 @@ export async function generateTicketPDF(ticket: TicketData) {
   pdf.setFillColor(30, 30, 50);
   pdf.roundedRect(posterX - 1, posterY - 1, posterW + 2, posterH + 2, 3, 3, 'F');
   
-  // Ajouter l'affiche
-  try {
-    if (ticket.moviePoster) {
-      const img = await loadImage(ticket.moviePoster);
-      pdf.addImage(img, 'JPEG' as any, posterX, posterY, posterW, posterH);
-    }
-  } catch (e) {
-    // Fallback avec dégradé
-    pdf.setFillColor(50, 30, 60);
-    pdf.rect(posterX, posterY, posterW, posterH, 'F');
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(8);
-    pdf.text('AFFICHE', posterX + posterW/2, posterY + posterH/2, { align: 'center' });
-  }
+  // Ajouter l'affiche (simplifié pour éviter les erreurs)
+  pdf.setFillColor(50, 30, 60);
+  pdf.rect(posterX, posterY, posterW, posterH, 'F');
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(6);
+  pdf.text('SENEFLIX', posterX + posterW/2, posterY + posterH/2, { align: 'center' });
 
   // Badge "EXCLUSIF" sur l'affiche
   pdf.setFillColor(251, 191, 36);
@@ -363,6 +355,17 @@ export async function generateTicketPDF(ticket: TicketData) {
 }
 
 export async function downloadTicketPDF(ticket: TicketData) {
-  const pdf = await generateTicketPDF(ticket);
-  pdf.save(`SENEFLIX-${ticket.movieTitle.replace(/\s+/g, '-')}-${ticket.id}.pdf`);
+  try {
+    console.log('=== Début du téléchargement du billet ===');
+    console.log('Ticket data:', ticket);
+    const pdf = await generateTicketPDF(ticket);
+    console.log('PDF généré avec succès');
+    const filename = `SENEFLIX-${ticket.movieTitle.replace(/\s+/g, '-')}-${ticket.id}.pdf`;
+    console.log('Sauvegarde du fichier:', filename);
+    pdf.save(filename);
+    console.log('=== Téléchargement terminé avec succès ===');
+  } catch (error) {
+    console.error('ERREUR lors du téléchargement:', error);
+    alert('Erreur lors du téléchargement du billet. Voir la console pour plus de détails.');
+  }
 }
