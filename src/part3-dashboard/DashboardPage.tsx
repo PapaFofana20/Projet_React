@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Ticket, Trash2, Star, Award, Gift, Zap, Film, ChevronRight, Crown, Settings, LogOut } from 'lucide-react';
+import { Ticket, Trash2, Star, Award, Gift, Zap, Film, ChevronRight, Crown, Settings, LogOut, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useBookings } from '../context/BookingContext';
 import { useAuth } from '../context/AuthContext';
 import { QRCodeSVG } from 'qrcode.react';
+import { downloadTicketPDF } from '../services/ticketPDFService';
 
 // Niveaux de fidélité
 const LOYALTY_TIERS = [
@@ -160,7 +161,7 @@ function WalletBookings({ bookings, onDelete }: { bookings: any[], onDelete: (id
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between gap-2">
                   <div className="bg-white p-2 rounded-lg">
                     <QRCodeSVG 
                       value={`SENEFLIX-${booking.id}`}
@@ -168,13 +169,22 @@ function WalletBookings({ bookings, onDelete }: { bookings: any[], onDelete: (id
                       level="H"
                     />
                   </div>
-                  <button 
-                    onClick={() => onDelete(booking.id)}
-                    className="p-3 bg-[#111] hover:bg-red-600 text-white rounded-full transition-colors border border-white/10"
-                    title="Annuler la réservation"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => downloadTicketPDF(booking)}
+                      className="p-3 bg-green-600 hover:bg-green-700 text-white rounded-full transition-colors border border-white/10"
+                      title="Télécharger le billet"
+                    >
+                      <Download className="w-5 h-5" />
+                    </button>
+                    <button 
+                      onClick={() => onDelete(booking.id)}
+                      className="p-3 bg-[#111] hover:bg-red-600 text-white rounded-full transition-colors border border-white/10"
+                      title="Annuler la réservation"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               </div>
               

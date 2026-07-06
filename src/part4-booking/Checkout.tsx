@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { CreditCard, CheckCircle, ArrowLeft, Globe, RefreshCw, AlertCircle, Loader2, ShieldCheck } from 'lucide-react';
+import { CreditCard, CheckCircle, ArrowLeft, Globe, RefreshCw, AlertCircle, Loader2, ShieldCheck, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useBookings } from '../context/BookingContext';
@@ -8,6 +8,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { fetchExchangeRates, convertFromFCFA, formatCurrency, currencies } from '../services/exchangeRateService';
 import type { ExchangeRates } from '../services/exchangeRateService';
 import { processPayment, formatCardNumber, detectCardType, TEST_CARDS, validateCardNumber, validateExpiry, validateCvv } from '../services/paymentService';
+import { downloadTicketPDF } from '../services/ticketPDFService';
 
 export default function Checkout() {
   const { id } = useParams();
@@ -18,6 +19,7 @@ export default function Checkout() {
   const [exchangeRates, setExchangeRates] = useState<ExchangeRates | null>(null);
   const [isLoadingRates, setIsLoadingRates] = useState(true);
   const [selectedCurrency, setSelectedCurrency] = useState('FCFA');
+  const [lastBookingId, setLastBookingId] = useState<string | null>(null);
   
   // États du paiement
   const [isProcessing, setIsProcessing] = useState(false);
@@ -128,7 +130,7 @@ export default function Checkout() {
 
       if (response.success) {
         // Sauvegarder la réservation
-        addBooking({
+        const newBookingData = {
           userEmail: user.email,
           movieId: bookingData.movieId,
           movieTitle: bookingData.movieTitle,
@@ -138,10 +140,14 @@ export default function Checkout() {
           cinema: bookingData.cinema,
           seats: bookingData.seats,
           totalPrice: bookingData.totalPrice,
-          status: 'upcoming',
+          status: 'upcoming' as const,
           transactionId: response.transactionId
-        });
+        };
+        addBooking(newBookingData);
         
+        // Get the last booking id
+        const newId = `B-${Date.now().toString().slice(-5)}`;
+        setLastBookingId(newId);
         setTransactionId(response.transactionId || null);
         localStorage.removeItem('pending_booking');
         setIsSuccess(true);
@@ -195,6 +201,28 @@ export default function Checkout() {
             </>
           )}
           <div className="space-y-4">
+            <button 
+              onClick={() => {
+                if (lastBookingId && bookingData) {
+                  downloadTicketPDF({
+                    id: lastBookingId,
+                    movieTitle: bookingData.movieTitle,
+                    moviePoster: bookingData.moviePoster,
+                    date: bookingData.date,
+                    time: bookingData.time,
+                    cinema: bookingData.cinema,
+                    seats: bookingData.seats,
+                    totalPrice: bookingData.totalPrice,
+                    transactionId: transactionId || undefined,
+                    userEmail: user?.email
+                  });
+                }
+              }}
+              className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-xl transition-colors"
+            >
+              <Download className="w-5 h-5" />
+              Télécharger le billet
+            </button>
             <Link 
               to="/dashboard"
               className="block w-full bg-brand-500 hover:bg-brand-600 text-white font-medium py-3 rounded-xl transition-colors"
