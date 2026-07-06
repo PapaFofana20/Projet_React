@@ -1,15 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
-import { PartyPopper, Film, Wallet, Sparkles, Calendar, Clock, MapPin, Armchair, Gift, User, Mail, Bell, LogOut, Download, Navigation, Globe, Phone } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { PartyPopper, Film, Wallet, Sparkles, Calendar, Clock, MapPin, Armchair, Gift, User, Mail, Bell, LogOut, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useBookings } from '../context/BookingContext';
 import { useAuth } from '../context/AuthContext';
 import { QRCodeSVG } from 'qrcode.react';
 import { downloadTicketPDF } from '../services/ticketPDFService';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import { cinemas } from '../data/cinemaLocations';
-import type { CinemaLocation } from '../data/cinemaLocations';
 
 // Niveaux de fidélité
 const LOYALTY_TIERS = [
@@ -28,51 +24,7 @@ const REWARDS = [
   { icon: 'sparkles', title: 'Surclassement', description: 'Place premium au prix normal', points: 2000, color: 'from-green-600 to-green-500' },
 ];
 
-// Styles de carte pour les cinémas
-const CINEMA_CARD_STYLES = [
-  { 
-    gradient: 'from-red-600/20 to-red-900/10', 
-    border: 'border-red-500/30',
-    accent: 'text-red-400',
-    icon: 'film',
-    badge: 'bg-red-500'
-  },
-  { 
-    gradient: 'from-amber-600/20 to-amber-900/10', 
-    border: 'border-amber-500/30',
-    accent: 'text-amber-400',
-    icon: 'map',
-    badge: 'bg-amber-500'
-  },
-  { 
-    gradient: 'from-green-600/20 to-green-900/10', 
-    border: 'border-green-500/30',
-    accent: 'text-green-400',
-    icon: 'navigation',
-    badge: 'bg-green-500'
-  },
-  { 
-    gradient: 'from-purple-600/20 to-purple-900/10', 
-    border: 'border-purple-500/30',
-    accent: 'text-purple-400',
-    icon: 'star',
-    badge: 'bg-purple-500'
-  },
-  { 
-    gradient: 'from-pink-600/20 to-pink-900/10', 
-    border: 'border-pink-500/30',
-    accent: 'text-pink-400',
-    icon: 'globe',
-    badge: 'bg-pink-500'
-  },
-  { 
-    gradient: 'from-cyan-600/20 to-cyan-900/10', 
-    border: 'border-cyan-500/30',
-    accent: 'text-cyan-400',
-    icon: 'location',
-    badge: 'bg-cyan-500'
-  },
-];
+
 
 // Messages sympas selon le niveau
 const TIER_MESSAGES: { [key: string]: string[] } = {
@@ -326,54 +278,7 @@ function TicketItem({ booking, onDelete, index }: { booking: any, onDelete: (id:
   );
 }
 
-// Mini carte pour les cinémas
-function CinemaMiniMap({ cinema }: { cinema: CinemaLocation }) {
-  const mapRef = useRef<L.Map | null>(null);
-  const mapContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!mapContainerRef.current || mapRef.current) return;
-
-    const tileLayer = cinema.mapStyle === 'dark' 
-      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-      : cinema.mapStyle === 'satellite'
-      ? 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-      : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-
-    mapRef.current = L.map(mapContainerRef.current, {
-      center: [cinema.lat, cinema.lng],
-      zoom: 14,
-      zoomControl: false,
-      dragging: false,
-      scrollWheelZoom: false,
-      doubleClickZoom: false,
-      attributionControl: false,
-    });
-
-    L.tileLayer(tileLayer, {
-      maxZoom: 19,
-    }).addTo(mapRef.current);
-
-    // Marqueur simple
-    const icon = L.divIcon({
-      className: 'mini-marker',
-      html: `<div style="width:20px;height:20px;background:${cinema.markerColor};border:2px solid white;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.4);"></div>`,
-      iconSize: [20, 20],
-      iconAnchor: [10, 10],
-    });
-
-    L.marker([cinema.lat, cinema.lng], { icon }).addTo(mapRef.current);
-
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-      }
-    };
-  }, [cinema]);
-
-  return <div ref={mapContainerRef} className="w-full h-full" />;
-}
 
 // Récompenses avec icônes Lucide
 function RewardCard({ reward, points }: { reward: any, points: number }) {
@@ -445,7 +350,6 @@ export default function DashboardPage() {
   const tabs = [
     { id: 'tickets', label: 'Mes billets', icon: 'ticket' },
     { id: 'rewards', label: 'Récompenses', icon: 'gift' },
-    { id: 'cinemas', label: 'Nos salles', icon: 'map' },
     { id: 'settings', label: 'Mon compte', icon: 'settings' },
   ];
 
@@ -580,79 +484,7 @@ export default function DashboardPage() {
                 </motion.div>
               )}
 
-              {/* Nos salles */}
-              {activeTab === 'cinemas' && (
-                <motion.div
-                  key="cinemas"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                >
-                  {/* Header */}
-                  <div className="bg-gradient-to-r from-red-600/20 to-red-500/10 rounded-2xl p-6 mb-8 border border-red-500/20">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 rounded-2xl bg-red-500/30 flex items-center justify-center">
-                        <Globe className="w-8 h-8 text-red-500" />
-                      </div>
-                      <div>
-                        <p className="text-gray-400 text-sm">Réseau SENEFLIX</p>
-                        <p className="text-3xl font-black text-white">{cinemas.length} <span className="text-lg text-gray-400">salles en Côte d'Ivoire</span></p>
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Grille de cinémas avec styles différents */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    {cinemas.map((cinema, index) => {
-                      const style = CINEMA_CARD_STYLES[index % CINEMA_CARD_STYLES.length];
-                      return (
-                        <motion.div
-                          key={cinema.id}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          className={`bg-gradient-to-b ${style.gradient} rounded-2xl p-6 border ${style.border} hover:scale-[1.02] transition-transform`}
-                        >
-                          <div className="flex items-start justify-between mb-4">
-                            <div 
-                              className={`w-12 h-12 rounded-xl flex items-center justify-center ${style.badge} bg-opacity-20`}
-                              style={{ backgroundColor: `${cinema.markerColor}20` }}
-                            >
-                              <MapPin className="w-6 h-6" style={{ color: cinema.markerColor }} />
-                            </div>
-                            <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${style.badge} text-white`}>
-                              {cinema.mapStyle === 'dark' ? 'Nuit' : cinema.mapStyle === 'satellite' ? 'Satellite' : 'Streets'}
-                            </span>
-                          </div>
-                          
-                          <h3 className="text-xl font-bold text-white mb-2">{cinema.name}</h3>
-                          <p className="text-gray-400 text-sm mb-4">{cinema.address}</p>
-                          
-                          <div className="space-y-2 text-sm">
-                            <div className="flex items-center gap-2 text-gray-300">
-                              <Navigation className={`w-4 h-4 ${style.accent}`} />
-                              <span>{cinema.city}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-gray-300">
-                              <Clock className="w-4 h-4 text-gray-500" />
-                              <span>{cinema.hours}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-gray-300">
-                              <Phone className="w-4 h-4 text-gray-500" />
-                              <span>{cinema.phone}</span>
-                            </div>
-                          </div>
-
-                          {/* Mini carte */}
-                          <div className="mt-4 rounded-xl overflow-hidden h-24 border border-white/10 relative">
-                            <CinemaMiniMap cinema={cinema} />
-                          </div>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              )}
 
               {/* Paramètres */}
               {activeTab === 'settings' && (
