@@ -86,8 +86,12 @@ export async function generateTicketPDF(ticket: TicketData) {
 
   // Dégradé subtil en haut (rouge vers noir)
   for (let i = 0; i < 25; i++) {
-    const alpha = 0.8 - (i * 0.03);
-    pdf.setFillColor(220, 38, 38, alpha * 255);
+    // Calculer la couleur en fonction de l'intensité (sans alpha)
+    const intensity = 0.8 - (i * 0.03);
+    const r = Math.floor(220 * intensity);
+    const g = Math.floor(38 * intensity);
+    const b = Math.floor(38 * intensity);
+    pdf.setFillColor(r, g, b);
     pdf.rect(0, i, pageWidth, 1, 'F');
   }
 
@@ -272,7 +276,7 @@ export async function generateTicketPDF(ticket: TicketData) {
   const qrY = posterY + 5;
 
   // Fond du QR avec effet glassmorphism
-  pdf.setFillColor(255, 255, 255, 5);
+  pdf.setFillColor(240, 240, 250);
   pdf.roundedRect(qrSectionX - 3, qrY - 3, qrSize + 6, qrSize + 6, 4, 4, 'F');
   
   // Bordure
