@@ -231,12 +231,12 @@ export default function LandingPage() {
   const newReleases = movies.filter(m => m.isNew);
   const exclusiveMovies = movies.filter(m => m.isExclusive);
 
-  // Auto-scroll du carrousel
+  // Auto-scroll du carrousel - 5 secondes
   useEffect(() => {
     if (isHovered) return;
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
-    }, 4000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [isHovered]);
 

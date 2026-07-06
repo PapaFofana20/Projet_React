@@ -190,13 +190,13 @@ export default function Checkout() {
                 <p className="text-gray-400 text-sm">{bookingData.date} à {bookingData.time}</p>
                 <p className="text-gray-400 text-sm">Places: {bookingData.seats.join(', ')}</p>
               </div>
-              <div className="bg-white p-3 rounded-xl inline-block mb-6 shadow-lg">
+              <div className="bg-white p-5 rounded-2xl inline-block mb-6 shadow-2xl border-4 border-white/30">
                 <QRCodeSVG 
                   value={`SENEFLIX-TICKET-${transactionId || Date.now()}-${bookingData.movieTitle}`} 
-                  size={120}
+                  size={140}
                   level="H"
                 />
-                <p className="text-black text-[10px] mt-2 font-mono uppercase tracking-widest">Scannez pour entrer</p>
+                <p className="text-gray-800 text-xs mt-3 font-bold uppercase tracking-widest">SCANNEZ POUR ENTRER</p>
               </div>
             </>
           )}

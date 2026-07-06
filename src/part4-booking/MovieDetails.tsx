@@ -2,6 +2,8 @@ import { Link, useParams } from 'react-router-dom';
 import { Clock, Star, Info, Ticket } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { movies } from '../data/movies';
+import { getCinemaForFilm } from '../data/cinemaLocations';
+import CinemaMap from '../components/CinemaMap';
 
 const getMovie = (id: string | undefined) => {
   return movies.find(m => m.id.toString() === id) || movies[0];
@@ -10,6 +12,7 @@ const getMovie = (id: string | undefined) => {
 export default function MovieDetails() {
   const { id } = useParams();
   const movie = getMovie(id);
+  const cinema = getCinemaForFilm(movie.id);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -103,6 +106,16 @@ export default function MovieDetails() {
                   <p className="font-semibold text-white">28 Février 2026</p>
                 </div>
               </div>
+
+              {/* Carte du cinéma */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mt-10"
+              >
+                <CinemaMap cinema={cinema} />
+              </motion.div>
             </motion.div>
 
           </div>

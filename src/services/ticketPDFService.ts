@@ -1,4 +1,5 @@
 import { jsPDF } from 'jspdf';
+import QRCode from 'qrcode';
 
 export interface TicketData {
   id: string;
@@ -11,6 +12,8 @@ export interface TicketData {
   totalPrice: number;
   transactionId?: string;
   userEmail?: string;
+  genre?: string;
+  director?: string;
 }
 
 const loadImage = (url: string): Promise<HTMLImageElement> => {
@@ -23,210 +26,339 @@ const loadImage = (url: string): Promise<HTMLImageElement> => {
   });
 };
 
-const generateQRCodeDataUrl = (_text: string): Promise<string> => {
-  return new Promise((resolve) => {
-    // Simple manual QR approach using canvas
-    const size = 256;
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d');
-    
-    if (!ctx) {
-      resolve('');
-      return;
-    }
-    
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, size, size);
-    ctx.fillStyle = 'black';
-    
-    // Draw a simple grid pattern as fallback
-    const cellSize = 32;
-    for (let i = 0; i < size; i += cellSize) {
-      for (let j = 0; j < size; j += cellSize) {
-        if ((i + j) % (cellSize * 2) === 0) {
-          ctx.fillRect(i, j, cellSize, cellSize);
-        }
-      }
-    }
-    
-    // Draw position patterns (the big squares)
-    const posSize = 64;
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, posSize, posSize); // TL
-    ctx.fillRect(size - posSize, 0, posSize, posSize); // TR
-    ctx.fillRect(0, size - posSize, posSize, posSize); // BL
-    
-    ctx.fillStyle = 'white';
-    ctx.fillRect(8, 8, 48, 48);
-    ctx.fillRect(size - 56, 8, 48, 48);
-    ctx.fillRect(8, size - 56, 48, 48);
-    
-    ctx.fillStyle = 'black';
-    ctx.fillRect(16, 16, 32, 32);
-    ctx.fillRect(size - 48, 16, 32, 32);
-    ctx.fillRect(16, size - 48, 32, 32);
-    
-    resolve(canvas.toDataURL('image/png'));
-  });
+const generateQRCodeDataUrl = async (text: string): Promise<string> => {
+  try {
+    return await QRCode.toDataURL(text, {
+      width: 400,
+      margin: 2,
+      color: {
+        dark: '#1a1a2e',
+        light: '#ffffff'
+      },
+      errorCorrectionLevel: 'H'
+    });
+  } catch (error) {
+    console.error('Failed to generate QR code:', error);
+    return '';
+  }
+};
+
+// Obtenir le jour de la semaine en français
+const getDayOfWeek = (dateStr: string): string => {
+  const jours = ['DIMANCHE', 'LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI'];
+  try {
+    const date = new Date(dateStr.split('/').reverse().join('-'));
+    return jours[date.getDay()];
+  } catch {
+    return '';
+  }
+};
+
+// Formater la date complète
+const formatDate = (dateStr: string): string => {
+  const mois = ['JAN', 'FÉV', 'MAR', 'AVR', 'MAI', 'JUN', 'JUIL', 'AOÛ', 'SEP', 'OCT', 'NOV', 'DÉ'];
+  try {
+    const parts = dateStr.split('/');
+    const day = parseInt(parts[0]);
+    const month = parseInt(parts[1]) - 1;
+    return `${day} ${mois[month]}`;
+  } catch {
+    return dateStr;
+  }
 };
 
 export async function generateTicketPDF(ticket: TicketData) {
   const pdf = new jsPDF({
-    orientation: 'portrait',
+    orientation: 'landscape',
     unit: 'mm',
-    format: 'a6',
+    format: [100, 180], // Format ticket bancaire
   });
 
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
 
-  // --- Background ---
-  // Main dark background
-  pdf.setFillColor(5, 5, 15); // Very dark
+  // ============================================
+  // BACKGROUND PRINCIPAL
+  // ============================================
+  // Fond noir profond
+  pdf.setFillColor(10, 10, 20);
   pdf.rect(0, 0, pageWidth, pageHeight, 'F');
 
-  // Accent red gradient effect (top strip)
-  pdf.setFillColor(220, 38, 38); // Red-600
-  pdf.rect(0, 0, pageWidth, 65, 'F');
+  // Dégradé subtil en haut (rouge vers noir)
+  for (let i = 0; i < 25; i++) {
+    const alpha = 0.8 - (i * 0.03);
+    pdf.setFillColor(220, 38, 38, alpha * 255);
+    pdf.rect(0, i, pageWidth, 1, 'F');
+  }
 
-  // Add subtle glow lines (decorative)
-  pdf.setDrawColor(248, 113, 113); // Red-400
-  pdf.setLineWidth(0.2);
-  pdf.line(5, 65, pageWidth - 5, 65);
+  // ============================================
+  // BANDEAU SUPÉRIEUR - HEADER
+  // ============================================
+  const headerY = 8;
+  
+  // Logo SENEFLIX stylisé
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFont('helvetica', 'bold');
+  pdf.setFontSize(18);
+  pdf.text('SENEFLIX', 10, headerY + 4);
 
-  // --- Movie Poster ---
-  let posterY = 10;
-  let posterH = 45;
-  let posterW = posterH * 0.66; // 2:3 ratio
-  let posterX = 5;
+  // Badge "BILLET NUMÉRIQUE"
+  pdf.setFillColor(220, 38, 38);
+  pdf.roundedRect(pageWidth - 38, headerY - 2, 30, 8, 2, 2, 'F');
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(5);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text('BILLET', pageWidth - 30, headerY + 3, { align: 'center' });
+  pdf.text('NUMÉRIQUE', pageWidth - 30, headerY + 6.5, { align: 'center' });
+
+  // Ligne séparatrice
+  pdf.setDrawColor(220, 38, 38);
+  pdf.setLineWidth(0.5);
+  pdf.line(5, 14, pageWidth - 5, 14);
+
+  // ============================================
+  // SECTION GAUCHE - AFFICHE FILM
+  // ============================================
+  const posterX = 8;
+  const posterY = 18;
+  const posterW = 38;
+  const posterH = 54;
+
+  // Cadre de l'affiche avec coins arrondis
+  pdf.setFillColor(30, 30, 50);
+  pdf.roundedRect(posterX - 1, posterY - 1, posterW + 2, posterH + 2, 3, 3, 'F');
+  
+  // Ajouter l'affiche
   try {
     if (ticket.moviePoster) {
       const img = await loadImage(ticket.moviePoster);
       pdf.addImage(img, 'JPEG' as any, posterX, posterY, posterW, posterH);
     }
   } catch (e) {
-    console.error('Failed to load poster', e);
+    // Fallback avec dégradé
+    pdf.setFillColor(50, 30, 60);
+    pdf.rect(posterX, posterY, posterW, posterH, 'F');
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(8);
+    pdf.text('AFFICHE', posterX + posterW/2, posterY + posterH/2, { align: 'center' });
   }
 
-  // --- Movie Title & Info (Right of poster) ---
+  // Badge "EXCLUSIF" sur l'affiche
+  pdf.setFillColor(251, 191, 36);
+  pdf.roundedRect(posterX + 2, posterY + 2, 18, 6, 1, 1, 'F');
+  pdf.setTextColor(0, 0, 0);
+  pdf.setFontSize(4);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text('★ EXCLUSIF', posterX + 11, posterY + 6, { align: 'center' });
+
+  // ============================================
+  // SECTION CENTRALE - INFORMATIONS FILM
+  // ============================================
+  const infoX = posterX + posterW + 8;
+  const infoW = pageWidth - infoX - 45;
+
+  // Titre du film
   pdf.setTextColor(255, 255, 255);
   pdf.setFont('helvetica', 'bold');
-  pdf.setFontSize(11);
-  const titleX = posterX + posterW + 5;
-  const titleMaxWidth = pageWidth - titleX - 5;
+  pdf.setFontSize(12);
   
-  // Split title to fit
-  let titleLines: string[] = [];
-  let currentLine = '';
-  const titleWords = ticket.movieTitle.split(' ');
-  titleWords.forEach(word => {
-    const testLine = currentLine + (currentLine ? ' ' : '') + word;
-    if (pdf.getTextWidth(testLine) <= titleMaxWidth || !currentLine) {
-      currentLine = testLine;
-    } else {
-      titleLines.push(currentLine);
-      currentLine = word;
-    }
-  });
-  if (currentLine) titleLines.push(currentLine);
-  pdf.text(titleLines.slice(0, 3), titleX, 20);
+  // Titre sur plusieurs lignes si nécessaire
+  const titleLines = pdf.splitTextToSize(ticket.movieTitle, infoW);
+  pdf.text(titleLines.slice(0, 2), infoX, posterY + 8);
 
-  // Genre / Tagline
-  pdf.setFont('helvetica', 'normal');
-  pdf.setFontSize(8);
-  pdf.setTextColor(252, 165, 165); // Red-200
-  pdf.text('CINÉMA EXCLUSIF', titleX, 33);
+  // Genre
+  if (ticket.genre) {
+    pdf.setTextColor(220, 38, 38);
+    pdf.setFontSize(6);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(ticket.genre.split('/')[0].trim(), infoX, posterY + 14);
+  }
 
-  // Ticket ID
-  pdf.setFontSize(7);
-  pdf.setTextColor(229, 231, 235); // Gray-200
-  pdf.text(`#${ticket.id}`, titleX, 40);
+  // Numéro de billet
+  pdf.setTextColor(100, 100, 120);
+  pdf.setFontSize(5);
+  pdf.text(`N° ${ticket.id}`, infoX, posterY + 18);
 
-  // --- Ticket Details Section ---
-  const detailsStartY = 80;
-  const leftCol = 8;
-  const rightCol = pageWidth / 2;
-  const lineSpacing = 9;
-
-  // Left column labels
-  pdf.setFont('helvetica', 'normal');
-  pdf.setFontSize(8);
-  pdf.setTextColor(156, 163, 175); // Gray-400
-  pdf.text('CINÉMA', leftCol, detailsStartY);
-  pdf.text('DATE', leftCol, detailsStartY + lineSpacing);
-  pdf.text('HEURE', leftCol, detailsStartY + lineSpacing * 2);
-  pdf.text('PLACES', leftCol, detailsStartY + lineSpacing * 3);
-  pdf.text('TOTAL', leftCol, detailsStartY + lineSpacing * 4);
-
-  // Right column values
-  pdf.setFont('helvetica', 'bold');
-  pdf.setTextColor(255, 255, 255);
-  pdf.setFontSize(9);
-  pdf.text(ticket.cinema, rightCol, detailsStartY);
-  pdf.text(ticket.date, rightCol, detailsStartY + lineSpacing);
-  pdf.text(ticket.time, rightCol, detailsStartY + lineSpacing * 2);
-  pdf.text(ticket.seats.join(', '), rightCol, detailsStartY + lineSpacing * 3);
-  pdf.text(`${ticket.totalPrice.toLocaleString()} FCFA`, rightCol, detailsStartY + lineSpacing * 4);
-
-  // Divider line
-  pdf.setDrawColor(55, 65, 81);
+  // Ligne décorative
+  pdf.setDrawColor(60, 60, 80);
   pdf.setLineWidth(0.3);
-  pdf.line(5, detailsStartY + lineSpacing * 5.2, pageWidth - 5, detailsStartY + lineSpacing * 5.2);
+  pdf.line(infoX, posterY + 21, infoX + infoW, posterY + 21);
 
-  // --- QR Code ---
-  const qrSize = 35;
-  const qrX = (pageWidth - qrSize) / 2;
-  const qrY = detailsStartY + lineSpacing * 6;
+  // ============================================
+  // INFORMATIONS DE LA SÉANCE
+  // ============================================
+  const detailY = posterY + 26;
+  const detailSpacing = 9;
+
+  // Jour de la semaine
+  pdf.setTextColor(220, 38, 38);
+  pdf.setFontSize(5);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text('JOUR', infoX, detailY);
   
-  // White box for QR
-  pdf.setFillColor(255, 255, 255);
-  pdf.roundedRect(qrX - 2, qrY - 2, qrSize + 4, qrSize + 4, 2, 2, 'F');
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(8);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text(getDayOfWeek(ticket.date), infoX, detailY + 4);
+
+  // Date
+  pdf.setTextColor(220, 38, 38);
+  pdf.setFontSize(5);
+  pdf.text('DATE', infoX + 28, detailY);
   
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(8);
+  pdf.text(formatDate(ticket.date), infoX + 28, detailY + 4);
+
+  // Heure
+  pdf.setTextColor(220, 38, 38);
+  pdf.setFontSize(5);
+  pdf.text('HEURE', infoX + 55, detailY);
+  
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(8);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text(ticket.time, infoX + 55, detailY + 4);
+
+  // Cinéma
+  pdf.setTextColor(220, 38, 38);
+  pdf.setFontSize(5);
+  pdf.text('SALLE', infoX, detailY + detailSpacing);
+  
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(7);
+  pdf.setFont('helvetica', 'normal');
+  pdf.text(ticket.cinema, infoX, detailY + detailSpacing + 4);
+
+  // Places
+  pdf.setTextColor(220, 38, 38);
+  pdf.setFontSize(5);
+  pdf.text('PLACES', infoX + 55, detailY + detailSpacing);
+  
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(7);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text(ticket.seats.join(', '), infoX + 55, detailY + detailSpacing + 4);
+
+  // Prix total
+  pdf.setTextColor(251, 191, 36);
+  pdf.setFontSize(6);
+  pdf.setFont('helvetica', 'normal');
+  pdf.text('MONTANT PAYÉ', infoX, detailY + detailSpacing * 2);
+  
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(11);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text(`${ticket.totalPrice.toLocaleString()} F`, infoX, detailY + detailSpacing * 2 + 5);
+
+  // ============================================
+  // PERFORATIONS DÉCORATIVES
+  // ============================================
+  const perforX = infoX + infoW + 3;
+  const perfRadius = 1.5;
+  
+  for (let y = 20; y < posterY + posterH - 5; y += 8) {
+    pdf.setFillColor(10, 10, 20);
+    pdf.circle(perforX, y, perfRadius, 'F');
+    pdf.setDrawColor(40, 40, 60);
+    pdf.circle(perforX, y, perfRadius + 0.3, 'S');
+  }
+
+  // ============================================
+  // SECTION DROITE - QR CODE
+  // ============================================
+  const qrSectionX = pageWidth - 42;
+  const qrSize = 32;
+  const qrY = posterY + 5;
+
+  // Fond du QR avec effet glassmorphism
+  pdf.setFillColor(255, 255, 255, 5);
+  pdf.roundedRect(qrSectionX - 3, qrY - 3, qrSize + 6, qrSize + 6, 4, 4, 'F');
+  
+  // Bordure
+  pdf.setDrawColor(220, 38, 38);
+  pdf.setLineWidth(0.4);
+  pdf.roundedRect(qrSectionX - 3, qrY - 3, qrSize + 6, qrSize + 6, 4, 4, 'S');
+
+  // QR Code
   try {
-    const qrDataUrl = await generateQRCodeDataUrl(`SENEFLIX-${ticket.id}`);
+    const qrDataUrl = await generateQRCodeDataUrl(`SENEFLIX-TICKET-${ticket.id}`);
     if (qrDataUrl) {
-      pdf.addImage(qrDataUrl, 'PNG', qrX, qrY, qrSize, qrSize);
+      pdf.addImage(qrDataUrl, 'PNG', qrSectionX, qrY, qrSize, qrSize);
     } else {
-      pdf.setTextColor(0, 0, 0);
+      pdf.setFillColor(240, 240, 240);
+      pdf.rect(qrSectionX, qrY, qrSize, qrSize, 'F');
+      pdf.setTextColor(100, 100, 100);
       pdf.setFontSize(10);
-      pdf.text('QR', qrX + qrSize / 2, qrY + qrSize / 2, { align: 'center' });
+      pdf.text('QR', qrSectionX + qrSize/2, qrY + qrSize/2, { align: 'center' });
     }
   } catch (e) {
-    console.error('Failed to add QR', e);
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFontSize(10);
-    pdf.text('QR', qrX + qrSize / 2, qrY + qrSize / 2, { align: 'center' });
+    pdf.setFillColor(240, 240, 240);
+    pdf.rect(qrSectionX, qrY, qrSize, qrSize, 'F');
   }
 
-  // --- Footer ---
-  // Brand logo
-  pdf.setTextColor(220, 38, 38);
+  // Texte sous le QR
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(5);
   pdf.setFont('helvetica', 'bold');
-  pdf.setFontSize(16);
-  pdf.text('SENEFLIX', pageWidth / 2, pageHeight - 10, { align: 'center' });
+  pdf.text('SCANNEZ', qrSectionX + qrSize/2, qrY + qrSize + 5, { align: 'center' });
+  pdf.setTextColor(200, 200, 200);
+  pdf.setFontSize(4);
+  pdf.text('POUR ENTRER', qrSectionX + qrSize/2, qrY + qrSize + 8, { align: 'center' });
 
-  // Subtle decorative corners
+  // Code de validation
+  pdf.setTextColor(100, 100, 120);
+  pdf.setFontSize(4);
+  pdf.setFont('helvetica', 'normal');
+  pdf.text(`CODE: SNF-${ticket.id.slice(0, 8).toUpperCase()}`, qrSectionX + qrSize/2, qrY + qrSize + 12, { align: 'center' });
+
+  // ============================================
+  // PIED DE PAGE
+  // ============================================
+  const footerY = pageHeight - 8;
+
+  // Ligne supérieure
+  pdf.setDrawColor(40, 40, 60);
+  pdf.setLineWidth(0.2);
+  pdf.line(5, footerY - 4, pageWidth - 5, footerY - 4);
+
+  // Texte légal
+  pdf.setTextColor(80, 80, 100);
+  pdf.setFontSize(3.5);
+  pdf.setFont('helvetica', 'normal');
+  pdf.text('Billet non échangeable, non remboursable. Valable uniquement pour la date et séance indiquées.', 5, footerY - 1);
+
+  // Conditions à droite
+  pdf.text('Présentez ce billet à l\'entrée', pageWidth - 5, footerY - 1, { align: 'right' });
+
+  // ============================================
+  // EFFETS DÉCORATIFS
+  // ============================================
+  
+  // Coins décoratifs
   pdf.setDrawColor(220, 38, 38);
-  pdf.setLineWidth(0.5);
-  // TL
-  pdf.line(3, 3, 3, 10);
-  pdf.line(3, 3, 10, 3);
-  // TR
-  pdf.line(pageWidth - 3, 3, pageWidth - 3, 10);
-  pdf.line(pageWidth - 10, 3, pageWidth - 3, 3);
-  // BL
-  pdf.line(3, pageHeight - 3, 3, pageHeight - 10);
-  pdf.line(3, pageHeight - 3, 10, pageHeight - 3);
-  // BR
-  pdf.line(pageWidth - 3, pageHeight - 3, pageWidth - 3, pageHeight - 10);
-  pdf.line(pageWidth - 10, pageHeight - 3, pageWidth - 3, pageHeight - 3);
+  pdf.setLineWidth(0.4);
+  
+  // Coin supérieur gauche
+  pdf.line(3, 3, 3, 8);
+  pdf.line(3, 3, 8, 3);
+  
+  // Coin supérieur droit
+  pdf.line(pageWidth - 3, 3, pageWidth - 3, 8);
+  pdf.line(pageWidth - 8, 3, pageWidth - 3, 3);
+  
+  // Coin inférieur gauche
+  pdf.line(3, pageHeight - 3, 3, pageHeight - 8);
+  pdf.line(3, pageHeight - 3, 8, pageHeight - 3);
+  
+  // Coin inférieur droit
+  pdf.line(pageWidth - 3, pageHeight - 3, pageWidth - 3, pageHeight - 8);
+  pdf.line(pageWidth - 8, pageHeight - 3, pageWidth - 3, pageHeight - 3);
 
   return pdf;
 }
 
 export async function downloadTicketPDF(ticket: TicketData) {
   const pdf = await generateTicketPDF(ticket);
-  pdf.save(`BILLET-SENEFLIX-${ticket.id}.pdf`);
+  pdf.save(`SENEFLIX-${ticket.movieTitle.replace(/\s+/g, '-')}-${ticket.id}.pdf`);
 }
