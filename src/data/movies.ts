@@ -74,7 +74,7 @@ export const movies = [
     genre: "Fantastique / Musical",
     director: "Jon M. Chu",
     description: "Elphaba, une jeune femme à la peau verte, et Glinda, une jeune femme blonde et populaire, se rencontrent à l'université et deviennent d'abord amis avant de devenir des rivales.",
-    isNew: true,
+    isNew: false,
     isExclusive: false
   },
   {
@@ -87,7 +87,7 @@ export const movies = [
     genre: "Action / Aventure / Science-Fiction",
     director: "Matt Shakman",
     description: "Quatre scientifiques sont exposés à un rayonnement cosmique et développent des pouvoirs extraordinaires. Ils doivent unir leurs forces pour affronter Galactus, le dévoreur de mondes.",
-    isNew: true,
+    isNew: false,
     isExclusive: false
   },
   {
@@ -139,7 +139,7 @@ export const movies = [
     genre: "Comédie / Aventure / Fantastique",
     director: "Alexandre Astier",
     description: "Arthur Pendragon doit retrouver son trône et reconquérir la confiance de ses chevaliers après avoir repris Kaamelott, alors que de nouveaux dangers venus des dieux celtes menacent l'île de Bretagne.",
-    isNew: true,
+    isNew: false,
     isExclusive: false
   },
   {
@@ -152,7 +152,7 @@ export const movies = [
     genre: "Crime / Drame / Thriller",
     director: "Todd Phillips",
     description: "Arthur Fleck, interné à l'asile d'Arkham après ses crimes, rencontre et tombe amoureux de Harleen Quinzel, une patiente qui deviendra Harley Quinn.",
-    isNew: true,
+    isNew: false,
     isExclusive: false
   },
   {
@@ -165,7 +165,7 @@ export const movies = [
     genre: "Action / Aventure / Science-Fiction",
     director: "George Miller",
     description: "Furiosa, jeune femme capturée de la Citadelle Verte, doit survivre au monde post-apocalyptique et trouver le chemin de la liberté avec l'aide de War Boy Dementus.",
-    isNew: true,
+    isNew: false,
     isExclusive: false
   },
   {
@@ -191,7 +191,7 @@ export const movies = [
     genre: "Action / Thriller",
     director: "Lorenzo Di Volo",
     description: "Un pompier héroïque rescapé d'un feu mortel qui a coûté la vie de son frère devient obsédé par la recherche de la vérité derrière l'incident.",
-    isNew: true,
+    isNew: false,
     isExclusive: false
   },
   {
@@ -204,7 +204,7 @@ export const movies = [
     genre: "Drame / Romance",
     director: "Robin Campillo",
     description: "Deux jeunes hommes se rencontrent et tombent amoureux dans le Paris des années 90, à l'époque de l'épidémie du sida.",
-    isNew: true,
+    isNew: false,
     isExclusive: false
   },
   {
