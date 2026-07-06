@@ -246,23 +246,23 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen bg-dark-900">
       {/* Carrousel Principal - Page d'Accueil */}
       <section 
-        className="relative h-[85vh] sm:h-[90vh] w-full overflow-hidden"
+        className="relative h-[70vh] sm:h-[80vh] md:h-[85vh] w-full overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="absolute inset-0 flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
           {carouselImages.map((slide, index) => (
-            <div key={slide.id} className="relative w-full h-[85vh] sm:h-[90vh] flex-shrink-0">
+            <div key={slide.id} className="relative w-full h-[70vh] sm:h-[80vh] md:h-[85vh] flex-shrink-0">
               <img 
                 src={slide.src} 
                 alt={slide.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/70 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-dark-900/80 via-dark-900/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/80 to-dark-900/20" />
+              <div className="absolute inset-0 bg-gradient-to-r from-dark-900/90 via-dark-900/50 to-transparent sm:from-dark-900/80 sm:via-dark-900/30" />
               
               {/* Contenu du film */}
-              <div className="absolute bottom-12 sm:bottom-16 md:bottom-20 left-4 sm:left-8 md:left-16 right-4 sm:right-8 md:right-16 lg:right-[30%]">
+              <div className="absolute bottom-6 sm:bottom-10 md:bottom-14 lg:bottom-20 left-3 sm:left-6 md:left-12 right-3 sm:right-6 md:right-12 lg:right-[30%]">
                 <motion.div 
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: index === currentSlide ? 1 : 0, y: index === currentSlide ? 0 : 30 }}
@@ -270,60 +270,60 @@ export default function LandingPage() {
                   className="max-w-3xl"
                 >
                   {/* Badges */}
-                  <div className="flex flex-wrap items-center gap-2 mb-3 sm:mb-4">
+                  <div className="flex flex-wrap items-center gap-1.5 mb-2 sm:mb-3 md:mb-4">
                     {slide.isNew && (
-                      <span className="inline-flex items-center gap-1.5 bg-brand-500 text-white text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg shadow-brand-500/50">
-                        <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                      <span className="inline-flex items-center gap-1 bg-brand-500 text-white text-[8px] sm:text-[10px] md:text-xs font-bold px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 md:py-1.5 rounded-full shadow-lg shadow-brand-500/50">
+                        <Sparkles className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
                         NOUVEAU
                       </span>
                     )}
                     {slide.isExclusive && (
-                      <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-yellow-500 to-amber-500 text-black text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg shadow-yellow-500/30">
-                        <Flame className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                      <span className="inline-flex items-center gap-1 bg-gradient-to-r from-yellow-500 to-amber-500 text-black text-[8px] sm:text-[10px] md:text-xs font-bold px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 md:py-1.5 rounded-full shadow-lg shadow-yellow-500/30">
+                        <Flame className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
                         EXCLUSIF
                       </span>
                     )}
                   </div>
 
                   {/* Titre */}
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 sm:mb-4 text-white tracking-tighter uppercase leading-none drop-shadow-2xl">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-2 sm:mb-3 md:mb-4 text-white tracking-tighter uppercase leading-tight drop-shadow-2xl">
                     {slide.title}
                   </h1>
                   
                   {/* Infos */}
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-4 sm:mb-6 text-xs sm:text-sm">
-                    <span className="border border-white/30 text-white/90 px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 md:gap-4 mb-3 sm:mb-4 md:mb-6 text-[10px] sm:text-xs md:text-sm">
+                    <span className="border border-white/30 text-white/90 px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] md:text-xs font-medium">
                       {slide.genre.split('/')[0].trim()}
                     </span>
-                    <span className="text-white/70 flex items-center gap-1">
-                      <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="text-white/70 flex items-center gap-0.5 sm:gap-1">
+                      <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4" />
                       {slide.duration}
                     </span>
-                    <span className="flex items-center gap-1 text-yellow-400 font-bold">
-                      <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-current" /> 
+                    <span className="flex items-center gap-0.5 sm:gap-1 text-yellow-400 font-bold">
+                      <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 fill-current" /> 
                       {slide.rating}
                     </span>
                   </div>
 
                   {/* Description */}
-                  <p className="text-sm sm:text-base text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-2xl drop-shadow-lg line-clamp-2 sm:line-clamp-3">
+                  <p className="text-[12px] sm:text-sm md:text-base text-white/90 mb-4 sm:mb-5 md:mb-8 leading-relaxed max-w-2xl drop-shadow-lg line-clamp-2 sm:line-clamp-3">
                     {slide.description}
                   </p>
 
                   {/* Boutons */}
-                  <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                  <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 md:gap-4">
                     <Link 
                       to={`/book/${slide.movieId}/seats`}
-                      className="group flex items-center gap-2 sm:gap-3 bg-red-600 text-white px-5 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-lg hover:bg-red-700 transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl"
+                      className="group flex items-center gap-1.5 sm:gap-2 md:gap-3 bg-red-600 text-white px-4 sm:px-5 md:px-8 py-2.5 sm:py-3 md:py-4 rounded-lg font-bold text-xs sm:text-sm md:text-lg hover:bg-red-700 transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl"
                     >
-                      <Ticket className="w-5 h-5 sm:w-6 sm:h-6 fill-current group-hover:rotate-12 transition-transform" />
+                      <Ticket className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 fill-current group-hover:rotate-12 transition-transform" />
                       Réserver
                     </Link>
                     <Link 
                       to={`/movie/${slide.movieId}`}
-                      className="group flex items-center gap-2 sm:gap-3 bg-white/20 backdrop-blur-md text-white px-5 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-lg hover:bg-white/30 transition-all duration-300 border border-white/20"
+                      className="group flex items-center gap-1.5 sm:gap-2 md:gap-3 bg-white/20 backdrop-blur-md text-white px-4 sm:px-5 md:px-8 py-2.5 sm:py-3 md:py-4 rounded-lg font-bold text-xs sm:text-sm md:text-lg hover:bg-white/30 transition-all duration-300 border border-white/20"
                     >
-                      <Info className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" />
+                      <Info className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
                       Détails
                     </Link>
                   </div>
