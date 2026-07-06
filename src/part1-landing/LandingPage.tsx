@@ -347,6 +347,18 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Section Title */}
+      <motion.section 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="relative z-20 px-4 sm:px-6 md:px-8 lg:px-12 max-w-[1600px] mx-auto w-full pt-8 sm:pt-12 md:pt-16 text-center"
+      >
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter">
+          Ne ratez plus aucune <span className="text-red-600">émotion</span>.
+        </h2>
+      </motion.section>
+
             <section className="relative z-20 px-4 sm:px-6 md:px-8 lg:px-12 max-w-[1600px] mx-auto w-full pt-6 sm:pt-8 md:pt-12">
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div className="flex items-center gap-2 sm:gap-3">
