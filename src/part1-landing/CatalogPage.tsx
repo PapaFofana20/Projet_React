@@ -13,18 +13,27 @@ export default function CatalogPage() {
     new Set(movies.flatMap(m => m.genre.split('/').map(g => g.trim())))
   ).sort();
 
-  const filteredMovies = movies.filter(movie => {
-    const matchesSearch = movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      movie.director.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesGenre = selectedGenre === 'all' || 
-      movie.genre.split('/').map(g => g.trim()).includes(selectedGenre);
-    const matchesFilter = 
-      selectedFilter === 'all' ||
-      (selectedFilter === 'new' && movie.isNew) ||
-      (selectedFilter === 'exclusive' && movie.isExclusive);
-    
-    return matchesSearch && matchesGenre && matchesFilter;
-  });
+  const filteredMovies = movies
+    .filter(movie => {
+      const matchesSearch = movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        movie.director.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesGenre = selectedGenre === 'all' || 
+        movie.genre.split('/').map(g => g.trim()).includes(selectedGenre);
+      const matchesFilter = 
+        selectedFilter === 'all' ||
+        (selectedFilter === 'new' && movie.isNew) ||
+        (selectedFilter === 'exclusive' && movie.isExclusive);
+      
+      return matchesSearch && matchesGenre && matchesFilter;
+    })
+    .sort((a, b) => {
+      // First sort by isNew (newest first)
+      if (a.isNew !== b.isNew) {
+        return a.isNew ? -1 : 1;
+      }
+      // Then sort by ID descending (higher ID = newer)
+      return b.id - a.id;
+    });
 
   return (
     <div className="min-h-screen bg-dark-900">
