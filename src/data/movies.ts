@@ -1,5 +1,18 @@
 export const movies = [
   {
+    id: 28,
+    title: "Michael",
+    image: "/carousel/micheal-2.jpg",
+    poster: "/carousel/micheal-2.jpg",
+    rating: 8.2,
+    duration: "2h 15m",
+    genre: "Drame / Biographie",
+    director: "Antoine Fuqua",
+    description: "Biographie autorisée de Michael Jackson, explorant son parcours depuis l'enfance dans le groupe Jackson 5 jusqu'à son statut de King of Pop.",
+    isNew: true,
+    isExclusive: true
+  },
+  {
     id: 3,
     title: "Deadpool & Wolverine",
     image: "https://image.tmdb.org/t/p/w1280/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
@@ -180,19 +193,6 @@ export const movies = [
     description: "Un pompier héroïque rescapé d'un feu mortel qui a coûté la vie de son frère devient obsédé par la recherche de la vérité derrière l'incident.",
     isNew: true,
     isExclusive: false
-  },
-  {
-    id: 28,
-    title: "Michael",
-    image: "/carousel/micheal-2.jpg",
-    poster: "/carousel/micheal-2.jpg",
-    rating: 8.2,
-    duration: "2h 15m",
-    genre: "Drame / Biographie",
-    director: "Antoine Fuqua",
-    description: "Biographie autorisée de Michael Jackson, explorant son parcours depuis l'enfance dans le groupe Jackson 5 jusqu'à son statut de King of Pop.",
-    isNew: true,
-    isExclusive: true
   },
   {
     id: 29,
