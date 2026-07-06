@@ -8,7 +8,7 @@ export const movies = [
     duration: "2h 7m",
     genre: "Action / Comédie / Science-Fiction",
     director: "Shawn Levy",
-    description: "L'existence paisible de Deadpool s'effondre lorsque la Time Variance Authority le recrute pour aider à sauvegarder l'intégrité du multivers.",
+    description: "Un mercenaire loquace est arraché de son existence paisible et entrainé de force dans l'univers cinématographique Marvel par l'autorité bureaucratique de variance temporelle.",
     isNew: true,
     isExclusive: true
   },
@@ -21,7 +21,7 @@ export const movies = [
     duration: "2h 18m",
     genre: "Horreur / Thriller / Surnaturel",
     director: "Ryan Coogler",
-    description: "En 1932, deux jumeaux reviennent dans leur ville natale du Mississippi pour démarrer une nouvelle vie, mais découvrent qu'une présence maléfique les attend.",
+    description: "En 1932, deux jumeaux reviennent dans leur ville natale du Mississippi pour démarrer une nouvelle vie, mais découvrent qu'une présence maléfique ancienne et puissante les hante.",
     isNew: true,
     isExclusive: true
   },
@@ -34,7 +34,7 @@ export const movies = [
     duration: "2h 9m",
     genre: "Action / Aventure / Drame",
     director: "James Gunn",
-    description: "Superman, le dernier fils de Krypton, découvre sa vraie identité et embrasse son destin de héros dans un monde en plein changement.",
+    description: "Clark Kent, un journaliste maladroit, découvre qu'il est Kal-El, le dernier survivant de la planète Krypton doté de pouvoirs incroyables. Il doit choisir entre sa vie normale et son destin de sauveur.",
     isNew: true,
     isExclusive: true
   },
@@ -47,7 +47,7 @@ export const movies = [
     duration: "1h 48m",
     genre: "Animation / Aventure / Comédie",
     director: "Jared Bush",
-    description: "Judy Hopps et Nick Wilde reviennent pour une nouvelle aventure palpitante dans le monde des animaux pour résoudre le mystère le plus complexe de leur carrière.",
+    description: "Judy Hopps et Nick Wilde reprennent service pour résoudre une affaire mystérieuse qui menaçe l'équilibre de toute la ville de Zootopie.",
     isNew: true,
     isExclusive: true
   },
@@ -60,7 +60,7 @@ export const movies = [
     duration: "2h 40m",
     genre: "Fantastique / Musical",
     director: "Jon M. Chu",
-    description: "L'extraordinaire sorcière de l'Ouest et Glinda la Bonne occupent le devant de la scène dans ce triomphe cinématographique maintes fois primé et qui a marqué toute une génération.",
+    description: "Elphaba, une jeune femme à la peau verte, et Glinda, une jeune femme blonde et populaire, se rencontrent à l'université et deviennent d'abord amis avant de devenir des rivales.",
     isNew: true,
     isExclusive: false
   },
@@ -73,7 +73,7 @@ export const movies = [
     duration: "1h 54m",
     genre: "Action / Aventure / Science-Fiction",
     director: "Matt Shakman",
-    description: "Les Quatre Fantastiques doivent maîtriser leur pouvoir extraordinaire et affronter le plus grand méchant de l'univers, Galactus.",
+    description: "Quatre scientifiques sont exposés à un rayonnement cosmique et développent des pouvoirs extraordinaires. Ils doivent unir leurs forces pour affronter Galactus, le dévoreur de mondes.",
     isNew: true,
     isExclusive: false
   },
@@ -86,7 +86,7 @@ export const movies = [
     duration: "2h 49m",
     genre: "Action / Thriller",
     director: "Christopher McQuarrie",
-    description: "Ethan Hunt et son équipe du FMI se lancent dans leur mission la plus dangereuse à ce jour : traquer une nouvelle arme terrifiante qui menace toute l'humanité.",
+    description: "Ethan Hunt et son équipe du FMI doivent traverser le monde pour trouver et détruire une nouvelle arme qui menacerait l'existence de toute l'humanité.",
     isNew: true,
     isExclusive: true
   },
@@ -99,7 +99,7 @@ export const movies = [
     duration: "2h 28m",
     genre: "Action / Drame / Historique",
     director: "Ridley Scott",
-    description: "Des années après avoir assisté à la mort du héros vénéré Maximus, Lucius est forcé d'entrer dans le Colisée pour affronter les empereurs tyranniques qui dirigent Rome.",
+    description: "Lucius, le neveu de Commode, doit renaitre de ses cendres pour restaurer la Rome de Maximus et affronter les empereurs corrompus qui tyrannisent le peuple.",
     isNew: true,
     isExclusive: true
   },
@@ -112,7 +112,7 @@ export const movies = [
     duration: "1h 58m",
     genre: "Action / Aventure / Science-Fiction",
     director: "Julius Onah",
-    description: "Sam Wilson prend le bouclier de Captain America et se retrouve au milieu d'un incident international complexe.",
+    description: "Sam Wilson assume pleinement son rôle de nouveau Captain America et doit faire face à une conspiration globale qui menace la sécurité du monde.",
     isNew: true,
     isExclusive: true
   },
@@ -125,7 +125,7 @@ export const movies = [
     duration: "2h 19m",
     genre: "Comédie / Aventure / Fantastique",
     director: "Alexandre Astier",
-    description: "Après avoir repris Kaamelott, Arthur doit prouver sa légitimité en tant que roi face à de nouvelles menaces venues des dieux celtes.",
+    description: "Arthur Pendragon doit retrouver son trône et reconquérir la confiance de ses chevaliers après avoir repris Kaamelott, alors que de nouveaux dangers venus des dieux celtes menacent l'île de Bretagne.",
     isNew: true,
     isExclusive: false
   },
@@ -138,22 +138,9 @@ export const movies = [
     duration: "2h 18m",
     genre: "Crime / Drame / Thriller",
     director: "Todd Phillips",
-    description: "Arthur Fleck est emprisonné à Arkham en attendant son procès pour les crimes commis en tant que Joker, tandis qu'il découvre l'amour avec Harley Quinn.",
+    description: "Arthur Fleck, interné à l'asile d'Arkham après ses crimes, rencontre et tombe amoureux de Harleen Quinzel, une patiente qui deviendra Harley Quinn.",
     isNew: true,
     isExclusive: false
-  },
-  {
-    id: 24,
-    title: "Spider-Man: No Way Home",
-    image: "/posters/spider-man-nwh.jpg",
-    poster: "/posters/spider-man-nwh.jpg",
-    rating: 8.2,
-    duration: "2h 28m",
-    genre: "Action / Aventure / Science-Fiction",
-    director: "Jon Watts",
-    description: "Peter Parker voit son identité révélée et demande l'aide de Doctor Strange pour retrouver sa vie normale, mais un multivers déchaîné déchaîne des villains mortels.",
-    isNew: true,
-    isExclusive: true
   },
   {
     id: 25,
@@ -164,7 +151,7 @@ export const movies = [
     duration: "2h 28m",
     genre: "Action / Aventure / Science-Fiction",
     director: "George Miller",
-    description: "L'histoire de Furiosa avant les événements de Mad Max: Fury Road.",
+    description: "Furiosa, jeune femme capturée de la Citadelle Verte, doit survivre au monde post-apocalyptique et trouver le chemin de la liberté avec l'aide de War Boy Dementus.",
     isNew: true,
     isExclusive: false
   },
@@ -177,7 +164,7 @@ export const movies = [
     duration: "1h 40m",
     genre: "Animation / Aventure / Comédie",
     director: "David Derrick Jr.",
-    description: "Moana et Maui sont de retour pour une nouvelle aventure palpitante alors qu'ils voyagent aux confins des océans du Pacifique et affrontent des défis encore plus grands.",
+    description: "Vaiana reprend la mer pour une nouvelle aventure avec Maui et un équipage de jeunes navigateurs pour explorer des terres inconnues au-delà des récifs.",
     isNew: true,
     isExclusive: true
   },
@@ -190,20 +177,20 @@ export const movies = [
     duration: "1h 54m",
     genre: "Action / Thriller",
     director: "Lorenzo Di Volo",
-    description: "Un pompier héroïque devient obsédé par la recherche de vérité après avoir survécu à un incident tragique qui a coûté la vie à son frère pompier.",
+    description: "Un pompier héroïque rescapé d'un feu mortel qui a coûté la vie de son frère devient obsédé par la recherche de la vérité derrière l'incident.",
     isNew: true,
     isExclusive: false
   },
   {
     id: 28,
-    title: "Micheal",
+    title: "Michael",
     image: "/carousel/micheal-2.jpg",
     poster: "/carousel/micheal-2.jpg",
     rating: 8.2,
     duration: "2h 15m",
     genre: "Drame / Biographie",
-    director: "Kelsey Grammer",
-    description: "L'histoire vraie et tragique de la légende du king of pop, explorant sa vie, sa musique et son héritage culturel.",
+    director: "Antoine Fuqua",
+    description: "Biographie autorisée de Michael Jackson, explorant son parcours depuis l'enfance dans le groupe Jackson 5 jusqu'à son statut de King of Pop.",
     isNew: true,
     isExclusive: true
   },
@@ -216,7 +203,7 @@ export const movies = [
     duration: "1h 55m",
     genre: "Drame / Romance",
     director: "Robin Campillo",
-    description: "Une histoire émouvante sur l'amour, le sacrifice et le sens de la vie.",
+    description: "Deux jeunes hommes se rencontrent et tombent amoureux dans le Paris des années 90, à l'époque de l'épidémie du sida.",
     isNew: true,
     isExclusive: false
   },
@@ -228,8 +215,8 @@ export const movies = [
     rating: 7.0,
     duration: "1h 45m",
     genre: "Thriller / Mystère",
-    director: "Inconnu",
-    description: "Un thriller haletant qui explore les profondeurs de l'identité et de la vérité.",
+    director: "Wil Aime",
+    description: "Un thriller haletant qui explore les profondeurs de l'identité et de la vérité, où chaque personnage cache un secret qui pourrait être fatal.",
     isNew: true,
     isExclusive: true
   },
@@ -242,7 +229,7 @@ export const movies = [
     duration: "2h 30m",
     genre: "Action / Aventure / Science-Fiction",
     director: "Destin Daniel Cretton",
-    description: "Peter Parker entame un nouveau chapitre de sa vie avec de nouveaux pouvoirs et de nouveaux défis.",
+    description: "Peter Parker est un étudiant à l'université Empire State qui doit équilibrer sa vie normale avec son rôle de Spider-Man, face à de nouveaux adversaires.",
     isNew: true,
     isExclusive: true
   }
