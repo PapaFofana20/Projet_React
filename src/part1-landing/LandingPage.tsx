@@ -332,19 +332,6 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
-
-
-
-        {/* Indicateurs */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-          {carouselImages.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all ${index === currentSlide ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/70'}`}
-            />
-          ))}
-        </div>
       </section>
 
       {/* Section Title */}
