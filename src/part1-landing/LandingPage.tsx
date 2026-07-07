@@ -16,7 +16,7 @@ const carouselImages = [
     genre: 'Action / Aventure / Science-Fiction',
     duration: '2h 30m',
     rating: 8.5,
-    description: "Peter Parker entame un nouveau chapitre de sa vie avec de nouveaux pouvoirs et de nouveaux defis."
+    description: "Peter Parker est un étudiant à l'université Empire State qui doit équilibrer sa vie normale avec son rôle de Spider-Man, face à de nouveaux adversaires."
   },
   { 
     id: 18, 
@@ -28,19 +28,19 @@ const carouselImages = [
     genre: 'Thriller / Mystère',
     duration: '1h 45m',
     rating: 7.0,
-    description: "Un thriller haletant qui explore les profondeurs de l'identité et de la vérité."
+    description: "Un thriller haletant qui explore les profondeurs de l'identité et de la vérité, où chaque personnage cache un secret qui pourrait être fatal."
   },
   { 
     id: 17, 
     src: '/carousel/micheal-carousel.jpg', 
-    title: 'Micheal',
+    title: 'Michael',
     movieId: 28,
     isNew: true,
     isExclusive: true,
     genre: 'Drame / Biographie',
     duration: '2h 15m',
     rating: 8.2,
-    description: 'Lhistoire vraie et tragique de la légende du king of pop.'
+    description: "Biographie autorisée de Michael Jackson, explorant son parcours depuis l'enfance dans le groupe Jackson 5 jusqu'à son statut de King of Pop."
   },
   { 
     id: 15, 
@@ -52,7 +52,7 @@ const carouselImages = [
     genre: 'Drame / Romance',
     duration: '1h 55m',
     rating: 6.8,
-    description: 'Une histoire émouvante sur lamour, le sacrifice et le sens de la vie.'
+    description: "Deux jeunes hommes se rencontrent et tombent amoureux dans le Paris des années 90, à l'époque de l'épidémie du sida."
   },
   { 
     id: 14, 
@@ -64,7 +64,7 @@ const carouselImages = [
     genre: 'Action / Aventure / Science-Fiction',
     duration: '2h 28m',
     rating: 7.6,
-    description: 'Lhistoire de Furiosa avant les événements de Mad Max: Fury Road.'
+    description: "Furiosa, jeune femme capturée de la Citadelle Verte, doit survivre au monde post-apocalyptique et trouver le chemin de la liberté avec l'aide de War Boy Dementus."
   },
   { 
     id: 13, 
@@ -76,7 +76,7 @@ const carouselImages = [
     genre: 'Action / Thriller',
     duration: '1h 54m',
     rating: 6.8,
-    description: 'Un pompier héroïque devient obsédé par la recherche de vérité après avoir survécu à un incident tragique.'
+    description: "Un pompier héroïque rescapé d'un feu mortel qui a coûté la vie de son frère devient obsédé par la recherche de la vérité derrière l'incident."
   },
   { 
     id: 12, 
@@ -88,7 +88,7 @@ const carouselImages = [
     genre: 'Action / Comédie / Science-Fiction',
     duration: '2h 7m',
     rating: 7.6,
-    description: 'Lexistence paisible de Deadpool souvire lorsquil est recruté par la Time Variance Authority.'
+    description: "Un mercenaire loquace est arraché de son existence paisible et entrainé de force dans l'univers cinématographique Marvel par l'autorité bureaucratique de variance temporelle."
   },
   { 
     id: 11, 
@@ -100,7 +100,7 @@ const carouselImages = [
     genre: 'Horreur / Thriller / Surnaturel',
     duration: '2h 18m',
     rating: 7.5,
-    description: 'En 1932, deux jumeaux reviennent dans leur ville natale du Mississippi et découvrent une présence maléfique.'
+    description: "En 1932, deux jumeaux reviennent dans leur ville natale du Mississippi pour démarrer une nouvelle vie, mais découvrent qu'une présence maléfique ancienne et puissante les hante."
   },
   { 
     id: 10, 
@@ -112,7 +112,7 @@ const carouselImages = [
     genre: 'Animation / Aventure / Comédie',
     duration: '1h 40m',
     rating: 7.3,
-    description: 'Moana et Maui sont de retour pour une nouvelle aventure aux confins des océans du Pacifique.'
+    description: "Vaiana reprend la mer pour une nouvelle aventure avec Maui et un équipage de jeunes navigateurs pour explorer des terres inconnues au-delà des récifs."
   },
   { 
     id: 9, 
@@ -124,7 +124,7 @@ const carouselImages = [
     genre: 'Animation / Aventure / Comédie',
     duration: '1h 48m',
     rating: 7.4,
-    description: 'Judy Hopps et Nick Wilde reviennent pour une nouvelle aventure palpitante.'
+    description: "Judy Hopps et Nick Wilde reprennent service pour résoudre une affaire mystérieuse qui menaçe l'équilibre de toute la ville de Zootopie."
   },
   { 
     id: 8, 
@@ -136,19 +136,19 @@ const carouselImages = [
     genre: 'Fantastique / Musical',
     duration: '2h 40m',
     rating: 7.4,
-    description: 'Lextraordinaire sorcière de lOuest et Glinda la Bonne occupent le devant de la scène.'
+    description: "Elphaba, une jeune femme à la peau verte, et Glinda, une jeune femme blonde et populaire, se rencontrent à l'université et deviennent d'abord amis avant de devenir des rivales."
   },
   { 
     id: 7, 
     src: '/carousel/mission-impossible.jpg', 
-    title: 'Mission: Impossible',
+    title: 'Mission: Impossible - The Final Reckoning',
     movieId: 16,
     isNew: true,
     isExclusive: true,
     genre: 'Action / Thriller',
     duration: '2h 49m',
     rating: 7.2,
-    description: 'Ethan Hunt et son équipe du FMI se lancent dans leur mission la plus dangereuse à ce jour.'
+    description: "Ethan Hunt et son équipe du FMI doivent traverser le monde pour trouver et détruire une nouvelle arme qui menacerait l'existence de toute l'humanité."
   },
   { 
     id: 6, 
@@ -160,31 +160,31 @@ const carouselImages = [
     genre: 'Action / Drame / Historique',
     duration: '2h 28m',
     rating: 6.5,
-    description: 'Lucius est forcé dentrer dans le Colisée pour affronter les empereurs tyranniques qui dirigent Rome.'
+    description: "Lucius, le neveu de Commode, doit renaitre de ses cendres pour restaurer la Rome de Maximus et affronter les empereurs corrompus qui tyrannisent le peuple."
   },
   { 
     id: 5, 
     src: '/carousel/captain-america.jpg', 
-    title: 'Captain America',
+    title: 'Captain America: Brave New World',
     movieId: 20,
     isNew: true,
     isExclusive: true,
     genre: 'Action / Aventure / Science-Fiction',
     duration: '1h 58m',
     rating: 6.3,
-    description: 'Sam Wilson prend le bouclier de Captain America et se retrouve au milieu dun incident international.'
+    description: "Sam Wilson assume pleinement son rôle de nouveau Captain America et doit faire face à une conspiration globale qui menace la sécurité du monde."
   },
   { 
     id: 4, 
     src: '/carousel/kaamelott.webp', 
-    title: 'Kaamelott',
+    title: 'Kaamelott : Deuxième Volet - Partie 1',
     movieId: 17,
     isNew: true,
     isExclusive: false,
     genre: 'Comédie / Aventure / Fantastique',
     duration: '2h 19m',
     rating: 6.1,
-    description: 'Arthur doit prouver sa légitimité en tant que roi face à de nouvelles menaces venues des dieux celtes.'
+    description: "Arthur Pendragon doit retrouver son trône et reconquérir la confiance de ses chevaliers après avoir repris Kaamelott, alors que de nouveaux dangers venus des dieux celtes menacent l'île de Bretagne."
   },
   { 
     id: 3, 
@@ -196,19 +196,19 @@ const carouselImages = [
     genre: 'Crime / Drame / Thriller',
     duration: '2h 18m',
     rating: 5.2,
-    description: 'Arthur Fleck est emprisonné à Arkham en attendant son procès pour les crimes commis en tant que Joker.'
+    description: "Arthur Fleck, interné à l'asile d'Arkham après ses crimes, rencontre et tombe amoureux de Harleen Quinzel, une patiente qui deviendra Harley Quinn."
   },
   { 
     id: 2, 
     src: '/carousel/les-4-fantastiques.jpg', 
-    title: 'Les 4 Fantastiques',
+    title: 'Les 4 Fantastiques: Premiers Pas',
     movieId: 23,
     isNew: true,
     isExclusive: false,
     genre: 'Action / Aventure / Science-Fiction',
     duration: '1h 54m',
     rating: 7.3,
-    description: 'Les Quatre Fantastiques doivent maîtriser leur pouvoir extraordinaire et affronter Galactus.'
+    description: "Quatre scientifiques sont exposés à un rayonnement cosmique et développent des pouvoirs extraordinaires. Ils doivent unir leurs forces pour affronter Galactus, le dévoreur de mondes."
   },
   { 
     id: 1, 
@@ -220,7 +220,7 @@ const carouselImages = [
     genre: 'Action / Aventure / Drame',
     duration: '2h 9m',
     rating: 7.5,
-    description: 'Superman, le dernier fils de Krypton, découvre sa vraie identité et embrasse son destin de héros.'
+    description: "Clark Kent, un journaliste maladroit, découvre qu'il est Kal-El, le dernier survivant de la planète Krypton doté de pouvoirs incroyables. Il doit choisir entre sa vie normale et son destin de sauveur."
   },
 ];
 
